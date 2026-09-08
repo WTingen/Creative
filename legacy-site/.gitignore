@@ -1,0 +1,9 @@
+# OS cruft
+.DS_Store
+._*
+
+# Safety net: nothing here should exceed 50MB (checked at time of import,
+# see README.md for the count/size snapshot). If a future re-pull adds
+# anything larger, exclude it explicitly here rather than committing it,
+# e.g.:
+# uploads/2027/03/huge-video.mp4
