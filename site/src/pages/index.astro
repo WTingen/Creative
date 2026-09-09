@@ -1,20 +1,14 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tingen Creative</title>
-  </head>
-  <body class="bg-white text-tc-gray">
-    <main class="mx-auto max-w-3xl px-6 py-24">
-      <img src="/images/logos/tingen-creative-logo-color.png" alt="Tingen Creative" class="h-12 w-auto mb-8" />
-      <h1 class="text-4xl font-black text-tc-gray">Scaffold check</h1>
-      <p class="mt-4 text-lg">
-        Astro + Tailwind v4 + brand tokens are wired up.
-        <span class="text-tc-orange font-semibold">This orange should be #F15A29.</span>
-      </p>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title="Tingen Creative"
+  description="Brand strategy and identity for commercial real estate, development, and construction companies."
+>
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-16 sm:py-24">
+    <h1 class="text-3xl sm:text-4xl font-black text-tc-gray">Layout check</h1>
+    <p class="mt-4 text-base sm:text-lg">
+      Header, footer, and SEO base are wired up. Home page content comes next.
+    </p>
+  </div>
+</BaseLayout>

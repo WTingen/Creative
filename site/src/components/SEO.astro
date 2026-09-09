@@ -1,0 +1,57 @@
+---
+import { SITE_URL, PHONE_TEL, EMAIL_USER, EMAIL_DOMAIN, BUSINESS_NAME } from '../lib/contact';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path relative to site root, e.g. "/services" — used for canonical + og:url */
+  path?: string;
+  /** Path to a share image relative to site root, e.g. "/images/og/home.jpg" */
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogImage = '/images/logos/tingen-creative-logo-color.png',
+  ogType = 'website',
+} = Astro.props;
+
+const canonicalURL = new URL(path, SITE_URL).toString();
+const ogImageURL = new URL(ogImage, SITE_URL).toString();
+const fullTitle = title.includes(BUSINESS_NAME) ? title : `${title} | ${BUSINESS_NAME}`;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: BUSINESS_NAME,
+  url: SITE_URL,
+  telephone: PHONE_TEL,
+  email: `${EMAIL_USER}@${EMAIL_DOMAIN}`,
+  image: new URL('/images/logos/tingen-creative-logo-color.png', SITE_URL).toString(),
+  areaServed: 'US',
+  description:
+    'Brand strategy and identity for commercial real estate, development, and construction companies.',
+};
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:site_name" content={BUSINESS_NAME} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
