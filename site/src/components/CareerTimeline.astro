@@ -1,0 +1,79 @@
+---
+// Animated career-timeline bar: three phases sized proportionally to real
+// years (6 / 12 / 5 of 23 total) rather than three disconnected stats —
+// the sequence itself is the point (CBRE -> freelance -> Tingen Creative).
+const phases = [
+  { years: 6, label: "Inside CBRE's brand team", shade: '#F6C4AA' },
+  { years: 12, label: 'Freelancing exclusively for CRE clients', shade: '#F58B5E' },
+  { years: 5, label: 'Running Tingen Creative', shade: '#F15A29' },
+];
+const total = phases.reduce((sum, p) => sum + p.years, 0);
+---
+<div class="career-timeline">
+  <div class="flex h-6 sm:h-8 w-full rounded-full overflow-hidden bg-white border border-tc-line" role="img" aria-label={`Career timeline: ${phases.map(p => `${p.years} years ${p.label.toLowerCase()}`).join(', ')}`}>
+    {phases.map((phase) => (
+      <div
+        class="timeline-segment h-full"
+        style={`background-color:${phase.shade}; width:0%;`}
+        data-target={(phase.years / total) * 100}
+      ></div>
+    ))}
+  </div>
+  <div class="mt-5 grid grid-cols-3 gap-4 sm:gap-8">
+    {phases.map((phase) => (
+      <div class="text-center">
+        <p class="timeline-number text-3xl sm:text-5xl font-black text-tc-ink" style="font-variant-numeric: tabular-nums;" data-target={phase.years}>0</p>
+        <p class="mt-2 text-xs sm:text-sm text-tc-gray leading-snug">{phase.label}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animateTimeline(root: HTMLElement) {
+    const segments = root.querySelectorAll<HTMLElement>('.timeline-segment');
+    const numbers = root.querySelectorAll<HTMLElement>('.timeline-number');
+
+    if (prefersReducedMotion) {
+      segments.forEach((el) => (el.style.width = `${el.dataset.target}%`));
+      numbers.forEach((el) => (el.textContent = el.dataset.target ?? '0'));
+      return;
+    }
+
+    segments.forEach((el, i) => {
+      setTimeout(() => {
+        el.style.transition = 'width 900ms cubic-bezier(0.22, 1, 0.36, 1)';
+        el.style.width = `${el.dataset.target}%`;
+      }, i * 150);
+    });
+
+    numbers.forEach((el) => {
+      const target = Number(el.dataset.target ?? '0');
+      const duration = 1000;
+      const start = performance.now();
+      function tick(now: number) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = String(Math.round(eased * target));
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  const timelines = document.querySelectorAll<HTMLElement>('.career-timeline');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateTimeline(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  timelines.forEach((el) => observer.observe(el));
+</script>

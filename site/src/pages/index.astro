@@ -1,45 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const stats = [
-  { number: '6', label: 'Years inside CBRE’s brand team' },
-  { number: '12', label: 'Years freelancing for CRE clients' },
-  { number: '5', label: 'Years running Tingen Creative' },
-];
+import CareerTimeline from '../components/CareerTimeline.astro';
 
 const clients = [
-  { name: 'CBRE', file: 'CBRE.png' },
   { name: 'Seefried Industrial Properties', file: 'Seefried.png' },
   { name: 'Apex Industrial', file: 'Apex.png' },
+  { name: 'Capital Development Partners', file: 'CDP.png' },
   { name: 'SVN', file: 'SVN.png' },
 ];
 ---
 <BaseLayout
   title="Tingen Creative"
-  description="Brand strategy and identity for commercial real estate, development, and construction companies — built by someone who started inside CBRE."
+  description="Brand strategy and identity for commercial real estate, development, and construction companies — built on nearly 20 years inside the industry."
 >
   <!-- Hero -->
   <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
     <div
-      class="absolute inset-0 -z-10"
-      style="background: radial-gradient(120% 100% at 15% 0%, var(--color-tc-accent-soft) 0%, var(--color-tc-paper) 55%);"
+      class="absolute -top-24 -left-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70"
+      style="background: #F6C4AA;"
     ></div>
+    <div
+      class="absolute -top-10 right-0 -z-10 h-64 w-64 sm:h-96 sm:w-96 rounded-full blur-3xl opacity-60"
+      style="background: #FDE9E1;"
+    ></div>
+    <div
+      class="absolute inset-0 -z-10 opacity-[0.4]"
+      style="background-image: radial-gradient(circle, #E9E5DE 1px, transparent 1px); background-size: 22px 22px;"
+    ></div>
+
     <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-16 sm:pb-20">
       <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">
         Brand strategy for commercial real estate
       </p>
       <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance max-w-3xl">
-        I started in brand at CBRE.<br />Today, CBRE is a client.
+        Almost 20 years building brands inside commercial real estate.
       </h1>
       <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
-        Warren Tingen has spent almost two decades building brands for the industry
-        he now positions yours in — six years inside CBRE, twelve more freelancing
-        exclusively for CRE clients, five running Tingen Creative.
+        Warren Tingen started in brand at CBRE, spent twelve more years freelancing
+        exclusively for CRE clients, and has run Tingen Creative since 2021 — one
+        industry, the whole way through.
       </p>
       <div class="mt-8 flex flex-col sm:flex-row gap-3">
         <a
           href="/contact"
-          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
         >
           Book a Call
         </a>
@@ -53,17 +58,10 @@ const clients = [
     </div>
   </section>
 
-  <!-- Stat bar -->
+  <!-- Career timeline -->
   <section class="border-y border-tc-line bg-white">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
-      <div class="grid grid-cols-3 gap-4 sm:gap-8">
-        {stats.map((stat) => (
-          <div class="text-center">
-            <p class="text-3xl sm:text-5xl font-black text-tc-orange tabular-nums">{stat.number}</p>
-            <p class="mt-2 text-xs sm:text-sm text-tc-gray leading-snug">{stat.label}</p>
-          </div>
-        ))}
-      </div>
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-14">
+      <CareerTimeline />
     </div>
   </section>
 
@@ -74,36 +72,36 @@ const clients = [
     </p>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
       {clients.map((client) => (
-        <div class="flex items-center justify-center rounded-2xl bg-white border border-tc-line shadow-sm p-6 sm:p-8">
+        <div class="flex items-center justify-center rounded-2xl bg-white border border-tc-line shadow-sm hover:shadow-md transition-shadow p-6 sm:p-10 min-h-[7rem] sm:min-h-[9rem]">
           <img
             src={`/images/clients/${client.file}`}
             alt={client.name}
-            class="max-h-10 sm:max-h-12 w-auto object-contain"
+            class="max-h-16 sm:max-h-20 w-auto object-contain"
           />
         </div>
       ))}
     </div>
   </section>
 
-  <!-- Flagship project -->
+  <!-- Featured project -->
   <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
     <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
       <img
         src="/images/work/apex-feature.webp"
         alt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
-        class="rounded-2xl shadow-md w-full aspect-square object-cover order-1 md:order-none"
+        class="rounded-2xl shadow-lg w-full aspect-square object-cover order-1 md:order-none"
       />
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">
-          Flagship project
+          Featured project
         </p>
         <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
           From a two-person operation to an industrial powerhouse
         </h2>
         <p class="mt-4 text-base text-tc-gray leading-relaxed">
-          Apex Industrial came to Tingen Creative with a logo and colors, but no
-          codified brand — nothing tying it together as the company grew. Today
-          Apex is a full-fledged industrial real estate advisory, built on brand
+          Apex Industrial came to Tingen Creative with a logo and colors, but
+          nothing tying it together for the company to grow. Today Apex is a
+          full-fledged industrial real estate advisory, built on brand
           standards designed to scale with it.
         </p>
         <a
@@ -121,9 +119,14 @@ const clients = [
 
   <!-- Closing CTA -->
   <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
     <div
-      class="absolute inset-0 -z-10"
-      style="background: radial-gradient(120% 100% at 85% 100%, var(--color-tc-accent-soft) 0%, var(--color-tc-paper) 55%);"
+      class="absolute -bottom-24 -right-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70"
+      style="background: #F6C4AA;"
+    ></div>
+    <div
+      class="absolute inset-0 -z-10 opacity-[0.4]"
+      style="background-image: radial-gradient(circle, #E9E5DE 1px, transparent 1px); background-size: 22px 22px;"
     ></div>
     <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 text-center">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-tc-ink text-balance max-w-2xl mx-auto">
@@ -132,7 +135,7 @@ const clients = [
       <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
         <a
           href="/contact"
-          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
         >
           Book a Call
         </a>
