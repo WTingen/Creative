@@ -1,14 +1,148 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stats = [
+  { number: '6', label: 'Years inside CBRE’s brand team' },
+  { number: '12', label: 'Years freelancing for CRE clients' },
+  { number: '5', label: 'Years running Tingen Creative' },
+];
+
+const clients = [
+  { name: 'CBRE', file: 'CBRE.png' },
+  { name: 'Seefried Industrial Properties', file: 'Seefried.png' },
+  { name: 'Apex Industrial', file: 'Apex.png' },
+  { name: 'SVN', file: 'SVN.png' },
+];
 ---
 <BaseLayout
   title="Tingen Creative"
-  description="Brand strategy and identity for commercial real estate, development, and construction companies."
+  description="Brand strategy and identity for commercial real estate, development, and construction companies — built by someone who started inside CBRE."
 >
-  <div class="mx-auto max-w-3xl px-4 sm:px-6 py-16 sm:py-24">
-    <h1 class="text-3xl sm:text-4xl font-black text-tc-gray">Layout check</h1>
-    <p class="mt-4 text-base sm:text-lg">
-      Header, footer, and SEO base are wired up. Home page content comes next.
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div
+      class="absolute inset-0 -z-10"
+      style="background: radial-gradient(120% 100% at 15% 0%, var(--color-tc-accent-soft) 0%, var(--color-tc-paper) 55%);"
+    ></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-16 sm:pb-20">
+      <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">
+        Brand strategy for commercial real estate
+      </p>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance max-w-3xl">
+        I started in brand at CBRE.<br />Today, CBRE is a client.
+      </h1>
+      <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+        Warren Tingen has spent almost two decades building brands for the industry
+        he now positions yours in — six years inside CBRE, twelve more freelancing
+        exclusively for CRE clients, five running Tingen Creative.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <a
+          href="/contact"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+        <a
+          href="/brand-review"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+        >
+          Take the Free Brand Review
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat bar -->
+  <section class="border-y border-tc-line bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-12">
+      <div class="grid grid-cols-3 gap-4 sm:gap-8">
+        {stats.map((stat) => (
+          <div class="text-center">
+            <p class="text-3xl sm:text-5xl font-black text-tc-orange tabular-nums">{stat.number}</p>
+            <p class="mt-2 text-xs sm:text-sm text-tc-gray leading-snug">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Client logos -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+    <p class="text-center text-xs font-bold uppercase tracking-widest text-tc-gray mb-8">
+      Trusted by teams at
     </p>
-  </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+      {clients.map((client) => (
+        <div class="flex items-center justify-center rounded-2xl bg-white border border-tc-line shadow-sm p-6 sm:p-8">
+          <img
+            src={`/images/clients/${client.file}`}
+            alt={client.name}
+            class="max-h-10 sm:max-h-12 w-auto object-contain"
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Flagship project -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <img
+        src="/images/work/apex-feature.webp"
+        alt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
+        class="rounded-2xl shadow-md w-full aspect-square object-cover order-1 md:order-none"
+      />
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">
+          Flagship project
+        </p>
+        <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
+          From a two-person operation to an industrial powerhouse
+        </h2>
+        <p class="mt-4 text-base text-tc-gray leading-relaxed">
+          Apex Industrial came to Tingen Creative with a logo and colors, but no
+          codified brand — nothing tying it together as the company grew. Today
+          Apex is a full-fledged industrial real estate advisory, built on brand
+          standards designed to scale with it.
+        </p>
+        <a
+          href="/work/apex-industrial"
+          class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity"
+        >
+          See the work
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="relative overflow-hidden">
+    <div
+      class="absolute inset-0 -z-10"
+      style="background: radial-gradient(120% 100% at 85% 100%, var(--color-tc-accent-soft) 0%, var(--color-tc-paper) 55%);"
+    ></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 text-center">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-tc-ink text-balance max-w-2xl mx-auto">
+        Ready to build a brand your growth can stand on?
+      </h2>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+        <a
+          href="/contact"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+        <a
+          href="/brand-review"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+        >
+          Take the Free Brand Review
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -7,7 +7,7 @@ const navLinks = [
 ];
 const currentPath = Astro.url.pathname;
 ---
-<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200">
+<header class="sticky top-0 z-50 bg-tc-paper/90 backdrop-blur border-b border-tc-line">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <div class="flex items-center justify-between h-16 sm:h-20">
       <a href="/" class="shrink-0" aria-label="Tingen Creative home">
@@ -71,14 +71,14 @@ const currentPath = Astro.url.pathname;
   <!-- Mobile menu panel -->
   <nav
     id="mobile-menu"
-    class="md:hidden hidden border-t border-gray-200 bg-white"
+    class="md:hidden hidden border-t border-tc-line bg-tc-paper"
     aria-label="Mobile"
   >
     <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-1">
       {navLinks.map((link) => (
         <a
           href={link.href}
-          class={`text-base font-semibold py-3 border-b border-gray-100 ${
+          class={`text-base font-semibold py-3 border-b border-tc-line ${
             currentPath.startsWith(link.href) ? 'text-tc-orange' : 'text-tc-gray'
           }`}
         >

@@ -21,7 +21,7 @@ const { title, description, path, ogImage, ogType } = Astro.props;
     <link rel="icon" type="image/png" href="/images/logos/tingen-creative-icon.png" />
     <SEO title={title} description={description} path={path} ogImage={ogImage} ogType={ogType} />
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-tc-gray antialiased">
+  <body class="min-h-screen flex flex-col bg-tc-paper text-tc-ink antialiased">
     <Header />
     <main class="flex-1">
       <slot />

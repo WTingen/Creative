@@ -12,9 +12,17 @@
   --color-tc-orange: #F15A29;
   --color-tc-gray: #656565;
 
+  /* Extended neutrals for a clean, bright layout — warm-biased so they sit
+     naturally with TC Orange rather than reading as a generic cool gray. */
+  --color-tc-paper: #FBFAF8;
+  --color-tc-ink: #1A1815;
+  --color-tc-accent-soft: #FDE9E1;
+  --color-tc-line: #E9E5DE;
+
   --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-tc-paper);
 }
