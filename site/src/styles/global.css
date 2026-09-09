@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@import "@fontsource/nunito-sans/300.css";
+@import "@fontsource/nunito-sans/300-italic.css";
+@import "@fontsource/nunito-sans/400.css";
+@import "@fontsource/nunito-sans/400-italic.css";
+@import "@fontsource/nunito-sans/900.css";
+@import "@fontsource/nunito-sans/900-italic.css";
+
+@theme {
+  /* Tingen Creative brand tokens — from Brand_Guidelines.pdf */
+  --color-tc-orange: #F15A29;
+  --color-tc-gray: #656565;
+
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
