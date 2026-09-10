@@ -1,12 +1,24 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CareerTimeline from '../components/CareerTimeline.astro';
+import heroTriptych from '../assets/images/work/hero-triptych.webp';
+import apexFeature from '../assets/images/work/apex-feature.webp';
+import seefriedFeature from '../assets/images/work/seefried-feature.webp';
+import dressgrayFeature from '../assets/images/work/dressgray-feature.webp';
+import horizonFeature from '../assets/images/work/horizon-feature.webp';
 
 const clients = [
   { name: 'Seefried Industrial Properties', file: 'Seefried.png' },
   { name: 'Apex Industrial', file: 'Apex.png' },
   { name: 'Capital Development Partners', file: 'CDP.png' },
   { name: 'SVN', file: 'SVN.png' },
+];
+
+const moreWork = [
+  { name: 'Seefried Industrial Properties', blurb: 'Sales collateral built to close', image: seefriedFeature, slug: 'seefried-industrial-properties' },
+  { name: 'dress gray', blurb: 'Discovery and brand workshop', image: dressgrayFeature, slug: 'dress-gray' },
+  { name: 'Horizon Living', blurb: 'A Manor Lakes development', image: horizonFeature, slug: 'horizon-living' },
 ];
 ---
 <BaseLayout
@@ -30,30 +42,42 @@ const clients = [
     ></div>
 
     <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-16 sm:pb-20">
-      <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">
-        Brand strategy for commercial real estate
-      </p>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance max-w-3xl">
-        Almost 20 years building brands inside commercial real estate.
-      </h1>
-      <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
-        Warren Tingen started in brand at CBRE, spent twelve more years freelancing
-        exclusively for CRE clients, and has run Tingen Creative since 2021 — one
-        industry, the whole way through.
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-3">
-        <a
-          href="/contact"
-          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
-        >
-          Book a Call
-        </a>
-        <a
-          href="/brand-review"
-          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
-        >
-          Take the Free Brand Review
-        </a>
+      <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
+        <div>
+          <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">
+            Brand strategy for commercial real estate
+          </p>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance">
+            Almost 20 years building brands inside commercial real estate.
+          </h1>
+          <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+            Warren Tingen started in brand at CBRE, spent twelve more years freelancing
+            exclusively for CRE clients, and has run Tingen Creative since 2021 — one
+            industry, the whole way through.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href="/contact"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
+            >
+              Book a Call
+            </a>
+            <a
+              href="/brand-review"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+            >
+              Take the Free Brand Review
+            </a>
+          </div>
+        </div>
+        <Image
+          src={heroTriptych}
+          alt="Commercial real estate work: a residential property at dusk, a downtown skyline, and an upscale interior lounge"
+          class="rounded-2xl shadow-lg w-full aspect-[4/5] max-h-[520px] object-cover mx-auto"
+          width={640}
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
     </div>
   </section>
@@ -86,10 +110,12 @@ const clients = [
   <!-- Featured project -->
   <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
     <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-      <img
-        src="/images/work/apex-feature.webp"
+      <Image
+        src={apexFeature}
         alt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
         class="rounded-2xl shadow-lg w-full aspect-square object-cover order-1 md:order-none"
+        width={600}
+        loading="lazy"
       />
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">
@@ -113,6 +139,33 @@ const clients = [
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </a>
+      </div>
+    </div>
+
+    <div class="mt-14 sm:mt-20 pt-14 sm:pt-20 border-t border-tc-line">
+      <div class="flex items-end justify-between gap-4 mb-8">
+        <h3 class="text-lg sm:text-xl font-black text-tc-ink">More recent work</h3>
+        <a href="/work" class="shrink-0 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity">
+          See all work
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-5">
+        {moreWork.map((project) => (
+          <a href={`/work/${project.slug}`} class="group block">
+            <Image
+              src={project.image}
+              alt={project.name}
+              class="rounded-2xl shadow-sm group-hover:shadow-md transition-shadow w-full aspect-square object-cover"
+              width={400}
+              loading="lazy"
+            />
+            <p class="mt-3 text-sm font-black text-tc-ink">{project.name}</p>
+            <p class="text-xs text-tc-gray">{project.blurb}</p>
+          </a>
+        ))}
       </div>
     </div>
   </section>

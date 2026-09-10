@@ -1,5 +1,68 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import foundationsImg from '../assets/images/services/foundations-styleguide.webp';
+import alignmentImg from '../assets/images/services/alignment-roadmap.webp';
+import marketingImg from '../assets/images/services/marketing-brochure.webp';
+import { SITE_URL, BUSINESS_NAME } from '../lib/contact';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: 'Brand Strategy and Identity Design',
+  provider: { '@type': 'ProfessionalService', name: BUSINESS_NAME, url: SITE_URL },
+  areaServed: 'US',
+  audience: {
+    '@type': 'BusinessAudience',
+    audienceType: 'Commercial real estate, development, and construction companies',
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Tingen Creative Services',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        name: 'Built Brand Foundations',
+        description:
+          'A three-phase brand build for companies starting from scratch: Brand Master Plan, Brand Build, and Brand Capstone.',
+        price: '15000',
+        priceCurrency: 'USD',
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          price: '15000',
+          priceCurrency: 'USD',
+          description: 'Starting price for Phase I of III; full engagement priced by phase.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        name: 'Brand Alignment',
+        description:
+          'For companies with an existing logo and colors but no codified brand system — discovery, workshop, and roll-out.',
+        price: '9500',
+        priceCurrency: 'USD',
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          price: '9500',
+          priceCurrency: 'USD',
+          description: 'Starting price.',
+        },
+      },
+      {
+        '@type': 'Offer',
+        name: 'Monthly Marketing',
+        description: 'An ongoing marketing subscription — flyers, social graphics, ads, presentations, and more.',
+        priceSpecification: {
+          '@type': 'UnitPriceSpecification',
+          price: '3500',
+          priceCurrency: 'USD',
+          unitText: 'MONTH',
+          description: 'Starting tier; a $4,995/month tier is also available.',
+        },
+      },
+    ],
+  },
+};
 
 const foundationsPhases = [
   {
@@ -61,6 +124,10 @@ const marketingTiers = [
   description="Three ways to work with Tingen Creative — build a brand from the ground up, align a brand that already has pieces but no system, or keep monthly marketing moving."
   path="/services"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  </Fragment>
+
   <!-- Intro -->
   <section class="relative overflow-hidden">
     <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
@@ -91,13 +158,22 @@ const marketingTiers = [
 
   <!-- Built Brand Foundations -->
   <section id="foundations" class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20 scroll-mt-20">
-    <div class="max-w-2xl">
-      <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Built Brand Foundations</p>
-      <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">Start here if you're building from the ground up.</h2>
-      <p class="mt-4 text-base text-tc-gray leading-relaxed">
-        A new brand, a new property, a new venture — this is the full path from
-        a blank page to a brand that's ready to work, in three phases.
-      </p>
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Built Brand Foundations</p>
+        <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">Start here if you're building from the ground up.</h2>
+        <p class="mt-4 text-base text-tc-gray leading-relaxed">
+          A new brand, a new property, a new venture — this is the full path from
+          a blank page to a brand that's ready to work, in three phases.
+        </p>
+      </div>
+      <Image
+        src={foundationsImg}
+        alt="Brand Identity Guidelines cover for Apex Industrial — an example brand guide produced during the Brand Capstone phase"
+        class="rounded-2xl shadow-lg w-full aspect-[4/3] object-cover"
+        width={600}
+        loading="lazy"
+      />
     </div>
 
     <div class="mt-10 grid md:grid-cols-3 gap-5">
@@ -143,6 +219,13 @@ const marketingTiers = [
             exist, but nothing keeps them consistent as the business — and the
             team — gets bigger.
           </p>
+          <Image
+            src={alignmentImg}
+            alt="dress gray Brand Strategy Roadmap — the discovery document produced for a real Brand Alignment engagement"
+            class="mt-6 rounded-2xl shadow-md w-full aspect-[4/3] object-cover"
+            width={500}
+            loading="lazy"
+          />
           <p class="mt-6 text-3xl font-black text-tc-ink">
             Starting at $9,500
           </p>
@@ -166,16 +249,25 @@ const marketingTiers = [
 
   <!-- Monthly Marketing -->
   <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
-    <div class="max-w-2xl">
-      <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Monthly Marketing</p>
-      <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
-        Already have a brand you're proud of? Keep the marketing moving.
-      </h2>
-      <p class="mt-4 text-base text-tc-gray leading-relaxed">
-        A fixed rate, fast turnaround, and the flexibility to cancel anytime —
-        flyers and brochures, offering memorandums, social graphics, print
-        and web ads, presentations, website design, and more.
-      </p>
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Monthly Marketing</p>
+        <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
+          Already have a brand you're proud of? Keep the marketing moving.
+        </h2>
+        <p class="mt-4 text-base text-tc-gray leading-relaxed">
+          A fixed rate, fast turnaround, and the flexibility to cancel anytime —
+          flyers and brochures, offering memorandums, social graphics, print
+          and web ads, presentations, website design, and more.
+        </p>
+      </div>
+      <Image
+        src={marketingImg}
+        alt="Apex Industrial leasing brochure mockup — an example of ongoing marketing collateral"
+        class="rounded-2xl shadow-lg w-full aspect-[4/3] object-cover"
+        width={600}
+        loading="lazy"
+      />
     </div>
 
     <div class="mt-10 grid sm:grid-cols-2 gap-5 max-w-3xl">
