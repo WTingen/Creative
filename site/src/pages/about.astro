@@ -1,0 +1,155 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CareerTimeline from '../components/CareerTimeline.astro';
+import warrenHeadshot from '../assets/images/about/warren-headshot.jpg';
+import { CALENDLY_URL } from '../lib/contact';
+
+const principles = [
+  {
+    title: 'You work directly with me',
+    body: "No account manager relaying messages, no junior designer learning on your project. When you email, I answer — and I'm the one in every meeting, on every call, at every deadline.",
+  },
+  {
+    title: 'The right help, when a project needs it',
+    body: "For larger engagements, I bring in trusted freelance collaborators I've worked with for years. The strategy, the direction, and the accountability stay with me the whole way through.",
+  },
+  {
+    title: 'You always know where things stand',
+    body: "Real deadlines, real communication. If something's behind, you hear it from me before you have to ask.",
+  },
+];
+---
+<BaseLayout
+  title="About"
+  description="About Warren Tingen, founder of Tingen Creative — twenty years building brands for commercial real estate, from CBRE to an independent practice."
+  path="/about"
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div class="absolute -top-24 -right-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70" style="background:#F6C4AA;"></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-16 sm:pb-20">
+      <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
+        <div>
+          <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">About</p>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance">
+            I've spent my whole career inside commercial real estate.
+          </h1>
+          <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+            Six years on CBRE's brand team. Twelve more freelancing exclusively for
+            CRE clients. Five years running Tingen Creative. I've never worked
+            outside this industry — which means I'm not learning your world while
+            I build your brand.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
+            >
+              Book a Call
+            </a>
+            <a
+              href="/work"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+            >
+              See the Work
+            </a>
+          </div>
+        </div>
+        <Image
+          src={warrenHeadshot}
+          alt="Warren Tingen, Founder and Creative Director of Tingen Creative"
+          class="rounded-2xl shadow-lg w-full max-w-sm mx-auto aspect-square object-cover"
+          width={640}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Career timeline -->
+  <section class="border-y border-tc-line bg-white">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-14">
+      <CareerTimeline />
+    </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 py-14 sm:py-20">
+    <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">The story</p>
+    <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
+      Enhancing brands with creativity, intent, and strategy.
+    </h2>
+    <div class="mt-6 space-y-5 text-base text-tc-gray leading-relaxed">
+      <p>
+        I started in brand at CBRE, one of the largest names in commercial real
+        estate — six years learning how the biggest players in this industry
+        think about their own identity, positioning, and story. From there I spent
+        twelve years freelancing exclusively for CRE clients, before founding
+        Tingen Creative in 2021.
+      </p>
+      <p>
+        That's not "20-plus years in marketing." That's most of two decades spent
+        entirely inside the industry I now build brands for — commercial real
+        estate, development, and construction. I know how a deal moves, what a
+        broker actually needs from a leasing flyer, and why a development brand
+        has to hold up on a monument sign as well as it does on a screen.
+      </p>
+      <p>
+        Tingen Creative exists to help you build your brand by developing the
+        strategy and collateral your business or property actually needs — not a
+        generic package, but the specific things that take the vision you already
+        have and get it in front of the people who need to see it.
+      </p>
+    </div>
+  </section>
+
+  <!-- How we'll work together -->
+  <section class="border-t border-tc-line bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+      <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">How we'll work together</p>
+      <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance max-w-2xl">
+        What it's actually like to hire Tingen Creative.
+      </h2>
+      <div class="mt-10 grid sm:grid-cols-3 gap-5">
+        {principles.map((principle) => (
+          <div class="rounded-2xl border border-tc-line bg-tc-paper p-6 sm:p-7">
+            <h3 class="text-lg font-black text-tc-ink">{principle.title}</h3>
+            <p class="mt-3 text-sm text-tc-gray leading-relaxed">{principle.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div class="absolute -bottom-24 -left-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70" style="background:#F6C4AA;"></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 text-center">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-tc-ink text-balance max-w-2xl mx-auto">
+        Ready to work with someone who already knows your industry?
+      </h2>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+        <a
+          href="/brand-review"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+        >
+          Take the Free Brand Review
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
