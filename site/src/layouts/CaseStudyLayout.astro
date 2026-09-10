@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Testimonial {
+  quote: string;
+  name: string;
+  title: string;
+}
+
+interface Props {
+  client: string;
+  summary: string;
+  description: string;
+  path: string;
+  heroImage: ImageMetadata;
+  heroImageAlt: string;
+  servicesUsed: string[];
+  challenge: string;
+  approach: string;
+  result: string;
+  testimonial?: Testimonial;
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const {
+  client,
+  summary,
+  description,
+  path,
+  heroImage,
+  heroImageAlt,
+  servicesUsed,
+  challenge,
+  approach,
+  result,
+  testimonial,
+  ctaHref = '/contact',
+  ctaLabel = 'Book a Call',
+} = Astro.props;
+---
+<BaseLayout title={client} description={description} path={path} ogType="article">
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-10 sm:pb-14">
+    <a href="/work" class="inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity mb-6">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      All work
+    </a>
+    <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-3">Case study</p>
+    <h1 class="text-3xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance max-w-3xl">{client}</h1>
+    <p class="mt-5 text-base sm:text-lg text-tc-gray max-w-2xl leading-relaxed">{summary}</p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      {servicesUsed.map((service) => (
+        <span class="text-xs font-bold uppercase tracking-wide text-tc-orange bg-tc-accent-soft rounded-full px-3 py-1.5">
+          {service}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6">
+    <Image
+      src={heroImage}
+      alt={heroImageAlt}
+      class="rounded-2xl shadow-lg w-full aspect-[16/9] object-cover"
+      width={1200}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </section>
+
+  <section class="mx-auto max-w-4xl px-4 sm:px-6 py-14 sm:py-20">
+    <div class="grid sm:grid-cols-3 gap-8 sm:gap-6">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Challenge</p>
+        <p class="text-base text-tc-gray leading-relaxed">{challenge}</p>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Approach</p>
+        <p class="text-base text-tc-gray leading-relaxed">{approach}</p>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Result</p>
+        <p class="text-base text-tc-gray leading-relaxed">{result}</p>
+      </div>
+    </div>
+
+    {testimonial && (
+      <blockquote class="mt-14 border-l-4 border-tc-orange pl-6">
+        <p class="text-lg sm:text-xl font-semibold text-tc-ink leading-relaxed text-balance">
+          &ldquo;{testimonial.quote}&rdquo;
+        </p>
+        <footer class="mt-4 text-sm text-tc-gray">
+          <span class="font-bold text-tc-ink">{testimonial.name}</span> — {testimonial.title}
+        </footer>
+      </blockquote>
+    )}
+
+    <div class="mt-14 pt-10 border-t border-tc-line flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+      <p class="text-base font-semibold text-tc-ink">Have a brand that needs the same kind of clarity?</p>
+      <a
+        href={ctaHref}
+        class="shrink-0 inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </section>
+</BaseLayout>

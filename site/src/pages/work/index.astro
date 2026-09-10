@@ -1,0 +1,135 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import apexFeature from '../../assets/images/work/apex-feature.webp';
+import seefriedFeature from '../../assets/images/work/seefried-feature.webp';
+import dressgrayFeature from '../../assets/images/work/dressgray-feature.webp';
+import horizonFeature from '../../assets/images/work/horizon-feature.webp';
+import cdpFeature from '../../assets/images/work/cdp-feature.webp';
+import svnFeature from '../../assets/images/work/svn-feature.webp';
+import oristrutsFeature from '../../assets/images/work/oristruts-feature.webp';
+import manorlakesFeature from '../../assets/images/work/manorlakes-feature.webp';
+import haileyFeature from '../../assets/images/work/hailey-feature.webp';
+
+const featured = [
+  {
+    name: 'Apex Industrial',
+    slug: 'apex-industrial',
+    image: apexFeature,
+    alt: 'Apex Industrial — aerial view of an industrial property with the Apex Industrial logo',
+    challenge: 'A logo and colors, but no codified brand as the company grew.',
+    approach: 'Aligned scattered materials into one real brand system.',
+    result: 'Grew from two people into a full industrial advisory.',
+  },
+  {
+    name: 'Seefried Industrial Properties',
+    slug: 'seefried-industrial-properties',
+    image: seefriedFeature,
+    alt: 'Seefried Industrial Properties brochure mockup',
+    challenge: 'Leasing collateral that had to move as fast as the deals.',
+    approach: 'An ongoing monthly retainer, request after request.',
+    result: 'Nearly ten years and counting.',
+  },
+  {
+    name: 'Horizon Living',
+    slug: 'horizon-living',
+    image: horizonFeature,
+    alt: 'Horizon Living monument sign, a Manor Lake Independent Living Community',
+    challenge: 'A brand-new senior living community, no identity yet.',
+    approach: 'Full identity plus signage, brochures, and rack cards.',
+    result: "One of Tingen Creative's largest engagements to date.",
+  },
+  {
+    name: 'dress gray',
+    slug: 'dress-gray',
+    image: dressgrayFeature,
+    alt: 'dress gray branded hard hat',
+    challenge: 'Wanted strategic thinking, not just a new logo.',
+    approach: 'Discovery and a brand workshop, written into a roadmap.',
+    result: 'A documented strategy to build the brand from.',
+  },
+];
+
+const moreWork = [
+  { name: 'Capital Development Partners', image: cdpFeature },
+  { name: 'SVN Commercial Real Estate', image: svnFeature },
+  { name: 'ORI Struts', image: oristrutsFeature },
+  { name: 'Manor Lake', image: manorlakesFeature },
+  { name: 'Hailey Realty Company', image: haileyFeature },
+];
+---
+<BaseLayout
+  title="Work"
+  description="Case studies from Tingen Creative — commercial real estate, development, and construction brands built and aligned over 20 years."
+  path="/work"
+>
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-12 sm:pb-16">
+    <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">Work</p>
+    <h1 class="text-4xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance max-w-2xl">
+      Real brands, real commercial real estate.
+    </h1>
+    <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+      A sample of the work — what each client walked in with, what changed, and
+      where they ended up.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-24">
+    <div class="grid sm:grid-cols-2 gap-6 sm:gap-8">
+      {featured.map((project) => (
+        <a href={`/work/${project.slug}`} class="group block rounded-2xl border border-tc-line bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+          <Image
+            src={project.image}
+            alt={project.alt}
+            class="w-full aspect-[16/9] object-cover"
+            width={700}
+            loading="lazy"
+          />
+          <div class="p-6 sm:p-7">
+            <h2 class="text-lg font-black text-tc-ink group-hover:text-tc-orange transition-colors">{project.name}</h2>
+            <dl class="mt-4 space-y-3">
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Challenge</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.challenge}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Approach</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.approach}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Result</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.result}</dd>
+              </div>
+            </dl>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange">
+              Read the case study
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-t border-tc-line bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+      <h2 class="text-lg sm:text-xl font-black text-tc-ink mb-8">More work</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 sm:gap-5">
+        {moreWork.map((project) => (
+          <div>
+            <Image
+              src={project.image}
+              alt={project.name}
+              class="rounded-2xl shadow-sm w-full aspect-square object-cover"
+              width={300}
+              loading="lazy"
+            />
+            <p class="mt-2 text-xs font-bold text-tc-ink">{project.name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
