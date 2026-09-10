@@ -1,25 +1,31 @@
 ---
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
 import apexFeature from '../../assets/images/work/apex-feature.webp';
-import apexStyleGuide from '../../assets/images/work/apex-tile-styleguide.webp';
-import apexColors from '../../assets/images/work/apex-tile-colors.webp';
-import apexBillboard from '../../assets/images/work/apex-tile-billboard.webp';
+import apexBusinessCard from '../../assets/images/work/apex-tile-businesscard.webp';
+import apexSignage from '../../assets/images/work/apex-tile-signage.webp';
+import apexFlyer from '../../assets/images/work/apex-tile-flyer.webp';
 ---
 <CaseStudyLayout
   client="Apex Industrial"
-  summary="An industrial real estate advisory that started as a two-person operation — now a full-fledged firm, built on brand standards designed to scale with it."
-  description="How Tingen Creative helped Apex Industrial codify an existing logo and colors into a real brand system as the company grew."
+  summary="A group of brokers launching a new industrial real estate brokerage — given a clean, lighter brand built to stand out from day one."
+  description="How Tingen Creative built the brand identity and marketing collateral for Apex Industrial as they launched a new industrial brokerage."
   path="/work/apex-industrial"
   heroImage={apexFeature}
   heroImageAlt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
-  squareImage1={apexStyleGuide}
-  squareImage1Alt="Apex Industrial Brand Identity Guidelines cover"
-  squareImage2={apexColors}
-  squareImage2Alt="Apex Industrial brand color palette"
-  rectImage={apexBillboard}
-  rectImageAlt="Apex Industrial leasing billboard"
+  squareImage1={apexBusinessCard}
+  squareImage1Alt="Apex Industrial business card"
+  squareImage2={apexSignage}
+  squareImage2Alt="Apex Industrial For Lease property signage"
+  rectImage={apexFlyer}
+  rectImageAlt="Apex Industrial property flyer"
   servicesUsed={['Brand Alignment']}
-  challenge="Apex Industrial already had a logo and a color palette, but nothing tying the two together as the company grew — no codified system for how the brand should show up across materials, from one deal to the next."
-  approach="Rather than starting over, Tingen Creative worked with the existing assets: gathering Apex's scattered materials, aligning them into a consistent system, and codifying the brand standards that were missing from day one."
-  result="What started as a two-person operation has grown into a full industrial real estate advisory — with brand standards built to scale alongside it, not rebuilt every time the company grows."
+  challenge="Apex Industrial — a group of brokers building a new business to manage industrial leasing and client relationships — wanted a clean, lighter look to distinguish them from other industrial brokerages, on a tight timeline as they launched."
+  approach="We expanded their color palette, solidified font choices, and selected an imagery style, then built collateral around voluminous white space and an eye-leading hierarchy — readable at a glance, with content chunked into small components rather than dense blocks."
+  result="Apex Industrial launched with a full, robust brand identity and collateral distinct from other industrial brokerage firms — and had materials posted at new client properties before the ink was dry."
+  testimonial={{
+    quote:
+      "Working with Tingen Creative to brand a new company has been a wonderful experience! They helped us from start to finish to create a brand identity we truly love and are proud to share. We will continue to use Tingen Creative as we grow and expand our new company and could not recommend Tingen Creative more.",
+    name: 'Ryan Blackburn',
+    title: 'Managing Broker, Apex Industrial',
+  }}
 />
