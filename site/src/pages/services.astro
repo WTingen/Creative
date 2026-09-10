@@ -110,11 +110,13 @@ const marketingTiers = [
   {
     price: '$3,500',
     features: ['One request at a time', 'One user', '48-hour average turnaround', 'Cancel anytime'],
+    checkoutUrl: 'https://buy.stripe.com/7sIcQ65gw0Ib3MkcMN',
   },
   {
     price: '$4,995',
     features: ['Up to two requests at a time', 'Up to two users', '48-hour average turnaround', 'Cancel anytime'],
     featured: true,
+    checkoutUrl: 'https://buy.stripe.com/9AQ3fw5gw4YrciQdQQ',
   },
 ];
 ---
@@ -279,7 +281,9 @@ const marketingTiers = [
             ))}
           </ul>
           <a
-            href="/contact"
+            href={tier.checkoutUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             class={`mt-6 inline-flex justify-center items-center text-sm font-bold rounded-xl px-6 py-3 transition-opacity ${
               tier.featured ? 'text-white bg-tc-orange hover:opacity-90' : 'text-tc-orange border-2 border-tc-orange hover:bg-tc-orange hover:text-white'
             }`}
