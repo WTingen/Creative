@@ -57,7 +57,8 @@ const {
   rectImageAlt,
 } = Astro.props;
 
-const hasTileGrid = Boolean(squareImage1 && squareImage2 && rectImage);
+const hasFullTileGrid = Boolean(squareImage1 && squareImage2 && rectImage);
+const hasTwoSquareGrid = Boolean(squareImage1 && squareImage2 && !rectImage);
 
 const ctaIsExternal = ctaHref.startsWith('http');
 ---
@@ -82,7 +83,7 @@ const ctaIsExternal = ctaHref.startsWith('http');
   </section>
 
   <section class="mx-auto max-w-6xl px-4 sm:px-6">
-    {hasTileGrid ? (
+    {hasFullTileGrid ? (
       <div class="grid grid-cols-2 sm:grid-cols-[2fr_1fr_1fr] sm:grid-rows-2 gap-3 sm:gap-4">
         <Image
           src={heroImage}
@@ -111,6 +112,31 @@ const ctaIsExternal = ctaHref.startsWith('http');
           alt={rectImageAlt ?? ''}
           class="col-span-2 sm:col-start-2 sm:col-span-2 sm:row-start-2 rounded-2xl shadow-md w-full h-full aspect-[2/1] object-cover"
           width={700}
+          loading="lazy"
+        />
+      </div>
+    ) : hasTwoSquareGrid ? (
+      <div class="grid grid-cols-2 sm:grid-cols-[2fr_1fr] sm:grid-rows-2 gap-3 sm:gap-4">
+        <Image
+          src={heroImage}
+          alt={heroImageAlt}
+          class="col-span-2 sm:col-span-1 sm:col-start-1 sm:row-span-2 rounded-2xl shadow-lg w-full h-full aspect-square sm:aspect-auto object-cover"
+          width={800}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <Image
+          src={squareImage1!}
+          alt={squareImage1Alt ?? ''}
+          class="sm:col-start-2 sm:row-start-1 rounded-2xl shadow-md w-full h-full aspect-square object-cover"
+          width={500}
+          loading="lazy"
+        />
+        <Image
+          src={squareImage2!}
+          alt={squareImage2Alt ?? ''}
+          class="sm:col-start-2 sm:row-start-2 rounded-2xl shadow-md w-full h-full aspect-square object-cover"
+          width={500}
           loading="lazy"
         />
       </div>
