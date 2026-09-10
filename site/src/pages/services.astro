@@ -156,50 +156,46 @@ const marketingTiers = [
   </section>
 
   <!-- Built Brand Foundations -->
-  <section id="foundations" class="scroll-mt-20">
-    <div class="relative overflow-hidden py-14 sm:py-16">
-      <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
-      <Image
-        src={architecturalSketch}
-        alt=""
-        role="presentation"
-        class="absolute inset-0 -z-10 w-full h-full object-cover services-illustration-mask"
-        width={1400}
-        loading="lazy"
-      />
-      <div class="mx-auto max-w-6xl px-4 sm:px-6">
-        <div class="max-w-2xl">
-          <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Built Brand Foundations</p>
-          <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">Start here if you're building from the ground up.</h2>
-          <p class="mt-4 text-base text-tc-gray leading-relaxed">
-            A new brand, a new property, a new venture — this is the full path from
-            a blank page to a brand that's ready to work, in three phases.
-          </p>
-        </div>
+  <section id="foundations" class="relative overflow-hidden scroll-mt-20 py-14 sm:py-20">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <Image
+      src={architecturalSketch}
+      alt=""
+      role="presentation"
+      class="absolute inset-0 -z-10 w-full h-full object-cover services-illustration-mask"
+      width={1600}
+      loading="lazy"
+    />
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="max-w-2xl">
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Built Brand Foundations</p>
+        <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">Start here if you're building from the ground up.</h2>
+        <p class="mt-4 text-base text-tc-gray leading-relaxed">
+          A new brand, a new property, a new venture — this is the full path from
+          a blank page to a brand that's ready to work, in three phases.
+        </p>
       </div>
-    </div>
 
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-10 pb-14 sm:pb-20">
-      <div class="grid md:grid-cols-3 gap-5">
-      {foundationsPhases.map((phase, i) => (
-        <div class="relative rounded-2xl border border-tc-line bg-white shadow-sm p-6 sm:p-7 flex flex-col">
-          <p class="text-xs font-mono font-bold text-tc-orange tracking-widest">{phase.number}</p>
-          <h3 class="mt-3 text-lg font-black text-tc-ink">{phase.name}</h3>
-          <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-tc-gray">{phase.timeline}</p>
-          <p class="mt-4 text-sm text-tc-gray leading-relaxed flex-1">{phase.blurb}</p>
-          <p class="mt-5 text-2xl font-black text-tc-ink">
-            {phase.price}<span class="text-base font-bold text-tc-gray">{phase.priceNote}</span>
-          </p>
-          {i < foundationsPhases.length - 1 && (
-            <div class="hidden md:flex absolute top-7 -right-3 z-10 h-6 w-6 items-center justify-center rounded-full bg-tc-orange text-white">
-              <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+      <div class="mt-10 grid md:grid-cols-3 gap-5">
+        {foundationsPhases.map((phase, i) => (
+          <div class="relative rounded-2xl border border-tc-line bg-white shadow-sm p-6 sm:p-7 flex flex-col">
+            <p class="text-xs font-mono font-bold text-tc-orange tracking-widest">{phase.number}</p>
+            <h3 class="mt-3 text-lg font-black text-tc-ink">{phase.name}</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-tc-gray">{phase.timeline}</p>
+            <p class="mt-4 text-sm text-tc-gray leading-relaxed flex-1">{phase.blurb}</p>
+            <p class="mt-5 text-2xl font-black text-tc-ink">
+              {phase.price}<span class="text-base font-bold text-tc-gray">{phase.priceNote}</span>
+            </p>
+            {i < foundationsPhases.length - 1 && (
+              <div class="hidden md:flex absolute top-7 -right-3 z-10 h-6 w-6 items-center justify-center rounded-full bg-tc-orange text-white">
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
       <p class="mt-4 text-xs text-tc-gray">*Brand Build scope varies by number of applications needed — final price confirmed after Phase I.</p>
 
       <div class="mt-8">
@@ -298,14 +294,6 @@ const marketingTiers = [
   <!-- Not sure -->
   <section class="relative overflow-hidden">
     <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
-    <Image
-      src={architecturalSketch}
-      alt=""
-      role="presentation"
-      class="absolute inset-0 -z-10 w-full h-full object-cover services-illustration-mask-tall"
-      width={1200}
-      loading="lazy"
-    />
     <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 text-center">
       <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance max-w-xl mx-auto">
         Not sure which one fits?
@@ -327,16 +315,12 @@ const marketingTiers = [
   /* Vignette-fade the architectural illustration to transparent at its
      edges so its rectangular canvas dissolves into the page background
      instead of showing a hard cutoff. The source file already carries a
-     flat 50% alpha throughout, so this mask only shapes the fade. */
+     flat 50% alpha throughout, so this mask only shapes the fade.
+     Tuned for a tall box (intro + three cards + CTA) — a tighter ellipse
+     here would fade almost the whole image out before it reaches the
+     card row. */
   .services-illustration-mask {
-    mask-image: radial-gradient(ellipse 65% 80% at 50% 50%, black 35%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 65% 80% at 50% 50%, black 35%, transparent 100%);
-  }
-
-  /* Same illustration, taller/narrower box (the closing CTA section) —
-     needs a wider-reaching fade to stay visible instead of vanishing. */
-  .services-illustration-mask-tall {
-    mask-image: radial-gradient(ellipse 90% 95% at 50% 45%, black 45%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 95% at 50% 45%, black 45%, transparent 100%);
+    mask-image: radial-gradient(ellipse 85% 90% at 50% 30%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 90% at 50% 30%, black 40%, transparent 100%);
   }
 </style>
