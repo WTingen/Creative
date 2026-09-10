@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import BaseLayout from './BaseLayout.astro';
+import { CALENDLY_URL } from '../lib/contact';
 
 interface Testimonial {
   quote: string;
@@ -37,9 +38,11 @@ const {
   approach,
   result,
   testimonial,
-  ctaHref = '/contact',
+  ctaHref = CALENDLY_URL,
   ctaLabel = 'Book a Call',
 } = Astro.props;
+
+const ctaIsExternal = ctaHref.startsWith('http');
 ---
 <BaseLayout title={client} description={description} path={path} ogType="article">
   <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-10 sm:pb-14">
@@ -103,6 +106,8 @@ const {
       <p class="text-base font-semibold text-tc-ink">Have a brand that needs the same kind of clarity?</p>
       <a
         href={ctaHref}
+        target={ctaIsExternal ? '_blank' : undefined}
+        rel={ctaIsExternal ? 'noopener noreferrer' : undefined}
         class="shrink-0 inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity"
       >
         {ctaLabel}

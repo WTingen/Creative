@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CareerTimeline from '../components/CareerTimeline.astro';
+import { CALENDLY_URL } from '../lib/contact';
 import heroTriptych from '../assets/images/work/hero-triptych.webp';
 import apexFeature from '../assets/images/work/apex-feature.webp';
 import seefriedFeature from '../assets/images/work/seefried-feature.webp';
@@ -57,7 +58,9 @@ const moreWork = [
           </p>
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
             <a
-              href="/contact"
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
             >
               Book a Call
@@ -187,7 +190,9 @@ const moreWork = [
       </h2>
       <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
         <a
-          href="/contact"
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
         >
           Book a Call

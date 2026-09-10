@@ -9,3 +9,6 @@ export const EMAIL_USER = "warren";
 export const EMAIL_DOMAIN = "tingencreative.com";
 
 export const SITE_URL = "https://tingencreative.com";
+
+// Every "Book a Call" button sitewide points here.
+export const CALENDLY_URL = "https://calendly.com/tingencreative/fit-call";

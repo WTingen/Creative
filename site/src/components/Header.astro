@@ -1,4 +1,6 @@
 ---
+import { CALENDLY_URL } from '../lib/contact';
+
 const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/work', label: 'Work' },
@@ -42,7 +44,9 @@ const currentPath = Astro.url.pathname;
           Free Brand Review
         </a>
         <a
-          href="/contact"
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           class="text-sm font-semibold text-white bg-tc-orange rounded px-4 py-2 hover:opacity-90 transition-opacity"
         >
           Book a Call
@@ -92,7 +96,9 @@ const currentPath = Astro.url.pathname;
         Free Brand Review
       </a>
       <a
-        href="/contact"
+        href={CALENDLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         class="mt-2 text-center text-sm font-semibold text-white bg-tc-orange rounded px-4 py-3"
       >
         Book a Call

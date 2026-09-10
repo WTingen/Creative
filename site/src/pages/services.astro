@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import marketingImg from '../assets/images/services/marketing-brochure.webp';
 import architecturalSketch from '../assets/images/illustrations/architectural-sketch-001.webp';
-import { SITE_URL, BUSINESS_NAME } from '../lib/contact';
+import { SITE_URL, BUSINESS_NAME, CALENDLY_URL } from '../lib/contact';
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -199,7 +199,7 @@ const marketingTiers = [
       <p class="mt-4 text-xs text-tc-gray">*Brand Build scope varies by number of applications needed — final price confirmed after Phase I.</p>
 
       <div class="mt-8">
-        <a href="/contact" class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity">
+        <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity">
           Book a Call to Start Your Brand
         </a>
       </div>
@@ -223,7 +223,7 @@ const marketingTiers = [
           <p class="mt-6 text-3xl font-black text-tc-ink">
             Starting at $9,500
           </p>
-          <a href="/contact" class="mt-6 inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity">
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity">
             Book a Call to Align Your Brand
           </a>
         </div>
