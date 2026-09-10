@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CareerTimeline from '../components/CareerTimeline.astro';
 import warrenHeadshot from '../assets/images/about/warren-headshot.jpg';
+import storyBackground from '../assets/images/illustrations/story-bkgd-001.webp';
 import { CALENDLY_URL } from '../lib/contact';
 
 const principles = [
@@ -79,32 +80,43 @@ const principles = [
   </section>
 
   <!-- Bio -->
-  <section class="mx-auto max-w-3xl px-4 sm:px-6 py-14 sm:py-20">
-    <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">The story</p>
-    <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
-      Enhancing brands with creativity, intent, and strategy.
-    </h2>
-    <div class="mt-6 space-y-5 text-base text-tc-gray leading-relaxed">
-      <p>
-        I started in brand at CBRE, one of the largest names in commercial real
-        estate — six years learning how the biggest players in this industry
-        think about their own identity, positioning, and story. From there I spent
-        twelve years freelancing exclusively for CRE clients, before founding
-        Tingen Creative in 2021.
-      </p>
-      <p>
-        That's not "20-plus years in marketing." That's most of two decades spent
-        entirely inside the industry I now build brands for — commercial real
-        estate, development, and construction. I know how a deal moves, what a
-        broker actually needs from a leasing flyer, and why a development brand
-        has to hold up on a monument sign as well as it does on a screen.
-      </p>
-      <p>
-        Tingen Creative exists to help you build your brand by developing the
-        strategy and collateral your business or property actually needs — not a
-        generic package, but the specific things that take the vision you already
-        have and get it in front of the people who need to see it.
-      </p>
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <Image
+      src={storyBackground}
+      alt=""
+      role="presentation"
+      class="absolute inset-0 -z-10 w-full h-full object-cover opacity-20"
+      width={1600}
+      loading="lazy"
+    />
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 py-14 sm:py-20">
+      <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">The story</p>
+      <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
+        Enhancing brands with creativity, intent, and strategy.
+      </h2>
+      <div class="mt-6 space-y-5 text-base text-tc-gray leading-relaxed">
+        <p>
+          I started in brand at CBRE, one of the largest names in commercial real
+          estate — six years learning how the biggest players in this industry
+          think about their own identity, positioning, and story. From there I spent
+          twelve years freelancing exclusively for CRE clients, before founding
+          Tingen Creative in 2021.
+        </p>
+        <p>
+          That's not "20-plus years in marketing." That's most of two decades spent
+          entirely inside the industry I now build brands for — commercial real
+          estate, development, and construction. I know how a deal moves, what a
+          broker actually needs from a leasing flyer, and why a development brand
+          has to hold up on a monument sign as well as it does on a screen.
+        </p>
+        <p>
+          Tingen Creative exists to help you build your brand by developing the
+          strategy and collateral your business or property actually needs — not a
+          generic package, but the specific things that take the vision you already
+          have and get it in front of the people who need to see it.
+        </p>
+      </div>
     </div>
   </section>
 
