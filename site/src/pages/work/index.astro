@@ -7,9 +7,8 @@ import dressgrayFeature from '../../assets/images/work/dressgray-feature.webp';
 import horizonFeature from '../../assets/images/work/horizon-feature.webp';
 import cdpFeature from '../../assets/images/work/cdp-feature.webp';
 import svnFeature from '../../assets/images/work/svn-feature.webp';
-import oristrutsFeature from '../../assets/images/work/oristruts-feature.webp';
-import manorlakesFeature from '../../assets/images/work/manorlakes-feature.webp';
-import haileyFeature from '../../assets/images/work/hailey-feature.webp';
+import svnKnoxvilleFeature from '../../assets/images/work/svn-knoxville-feature.webp';
+import manorLakeFeature from '../../assets/images/work/manorlake-booklet-feature.webp';
 
 const featured = [
   {
@@ -22,6 +21,15 @@ const featured = [
     result: 'Grew from two people into a full industrial advisory.',
   },
   {
+    name: 'Capital Development Partners',
+    slug: 'capital-development-partners',
+    image: cdpFeature,
+    alt: 'Capital Development Partners logo over an aerial view of a shipping port',
+    challenge: 'Brand elements in place, but nothing consolidated.',
+    approach: 'Consolidated it into one style guide and pitch deck.',
+    result: 'A consistent brand across every future collaboration.',
+  },
+  {
     name: 'Seefried Industrial Properties',
     slug: 'seefried-industrial-properties',
     image: seefriedFeature,
@@ -29,6 +37,15 @@ const featured = [
     challenge: 'Leasing collateral that moves as fast as the deals.',
     approach: 'An ongoing monthly retainer, request after request.',
     result: 'More than a decade and counting.',
+  },
+  {
+    name: 'Manor Lake',
+    slug: 'manor-lake',
+    image: manorLakeFeature,
+    alt: 'Manor Lake booklet cover — Where You Live',
+    challenge: 'A brand that felt inconsistent across every property.',
+    approach: 'Realigned the brand, then kept producing the collateral.',
+    result: 'Deeper connection across every Manor Lake community.',
   },
   {
     name: 'Horizon Living',
@@ -40,6 +57,24 @@ const featured = [
     result: "One of Tingen Creative's largest engagements to date.",
   },
   {
+    name: 'SVN | Stone Commercial Real Estate',
+    slug: 'svn-central-kentucky',
+    image: svnFeature,
+    alt: 'SVN Industrial Market Report, Central Kentucky',
+    challenge: 'Needed a market report that could travel anywhere.',
+    approach: 'Designed a report built for print, digital, and social.',
+    result: 'Well received across the region, by SVN and its clients.',
+  },
+  {
+    name: 'SVN | Wood Properties',
+    slug: 'svn-knoxville',
+    image: svnKnoxvilleFeature,
+    alt: 'SVN Wood Properties Greater Knoxville Industrial Market Report',
+    challenge: 'Needed a report that generated real excitement.',
+    approach: 'A market report built for both digital and print.',
+    result: 'Reused by the team quarter after quarter.',
+  },
+  {
     name: 'dress gray',
     slug: 'dress-gray',
     image: dressgrayFeature,
@@ -48,14 +83,6 @@ const featured = [
     approach: 'Discovery and a brand workshop, written into a roadmap.',
     result: 'A documented strategy to build the brand from.',
   },
-];
-
-const moreWork = [
-  { name: 'Capital Development Partners', image: cdpFeature },
-  { name: 'SVN Commercial Real Estate', image: svnFeature },
-  { name: 'ORI Struts', image: oristrutsFeature },
-  { name: 'Manor Lake', image: manorlakesFeature },
-  { name: 'Hailey Realty Company', image: haileyFeature },
 ];
 ---
 <BaseLayout
@@ -110,26 +137,6 @@ const moreWork = [
           </div>
         </a>
       ))}
-    </div>
-  </section>
-
-  <section class="border-t border-tc-line bg-white">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
-      <h2 class="text-lg sm:text-xl font-black text-tc-ink mb-8">More work</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 sm:gap-5">
-        {moreWork.map((project) => (
-          <div>
-            <Image
-              src={project.image}
-              alt={project.name}
-              class="rounded-2xl border border-tc-line w-full aspect-square object-cover"
-              width={300}
-              loading="lazy"
-            />
-            <p class="mt-2 text-xs font-bold text-tc-ink">{project.name}</p>
-          </div>
-        ))}
-      </div>
     </div>
   </section>
 </BaseLayout>
