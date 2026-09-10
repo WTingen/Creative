@@ -1,0 +1,592 @@
+<title>Tingen Creative Audit</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper:#F4F5F0;
+    --paper-raised:#FDFDFB;
+    --ink:#151F27;
+    --ink-soft:#4C5B63;
+    --line:#CBD3C7;
+    --line-strong:#9FAAA0;
+    --accent:#C1442C;
+    --accent-soft:#E7C9BE;
+    --good:#3E7A57;
+    --good-soft:#CFE1D2;
+    --gap-soft:#B9862E;
+    --gap-soft-bg:#EFDDBB;
+    --shadow: 0 1px 0 rgba(21,31,39,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#131C22;
+      --paper-raised:#182229;
+      --ink:#E7ECE4;
+      --ink-soft:#9DAAA2;
+      --line:#2C3A38;
+      --line-strong:#455651;
+      --accent:#E17A5C;
+      --accent-soft:#4A3229;
+      --good:#7BC298;
+      --good-soft:#20362A;
+      --gap-soft:#E3B15C;
+      --gap-soft-bg:#3A2F18;
+      --shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#131C22;
+    --paper-raised:#182229;
+    --ink:#E7ECE4;
+    --ink-soft:#9DAAA2;
+    --line:#2C3A38;
+    --line-strong:#455651;
+    --accent:#E17A5C;
+    --accent-soft:#4A3229;
+    --good:#7BC298;
+    --good-soft:#20362A;
+    --gap-soft:#E3B15C;
+    --gap-soft-bg:#3A2F18;
+    --shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 31px, var(--line) 31px, var(--line) 32px),
+      repeating-linear-gradient(90deg, transparent, transparent 31px, var(--line) 31px, var(--line) 32px),
+      var(--paper);
+    background-attachment:local;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent-soft); }
+
+  .sheet{ max-width:920px; margin:0 auto; padding:0 28px 120px; }
+
+  /* ---- title block ---- */
+  header.title-block{
+    max-width:920px; margin:0 auto; padding:28px 28px 0;
+  }
+  .tb-meta{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-soft);
+    border-bottom:1px solid var(--line-strong); padding-bottom:10px;
+  }
+  h1.doc-title{
+    font-family:'IBM Plex Sans Condensed', sans-serif; font-weight:700;
+    font-size:clamp(32px,5vw,50px); line-height:1.05; letter-spacing:-.01em;
+    margin:20px 0 8px; text-wrap:balance;
+  }
+  .doc-sub{
+    font-size:16px; color:var(--ink-soft); max-width:60ch; margin:0 0 22px;
+    line-height:1.5;
+  }
+  nav.toc{
+    display:flex; flex-wrap:wrap; gap:8px; padding:16px 0 20px; margin-bottom:8px;
+    border-bottom:1px solid var(--line-strong);
+  }
+  nav.toc a{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink); text-decoration:none;
+    border:1px solid var(--line-strong); border-radius:2px; padding:6px 10px;
+    background:var(--paper-raised);
+  }
+  nav.toc a:hover{ border-color:var(--accent); color:var(--accent); }
+  nav.toc a:focus-visible, a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---- sections ---- */
+  section{ padding-top:56px; scroll-margin-top:20px; }
+  .sheet-no{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--accent);
+    letter-spacing:.08em; margin:0 0 6px;
+  }
+  h2{
+    font-family:'IBM Plex Sans Condensed', sans-serif; font-weight:700;
+    font-size:clamp(22px,3vw,30px); margin:0 0 14px; letter-spacing:-.005em;
+    text-wrap:balance;
+  }
+  h3{
+    font-family:'IBM Plex Sans Condensed', sans-serif; font-weight:600;
+    font-size:18px; margin:26px 0 8px;
+  }
+  p{ line-height:1.65; margin:0 0 14px; max-width:70ch; }
+  p.lede{ font-size:17px; color:var(--ink-soft); max-width:66ch; }
+  strong{ font-weight:600; }
+  a.inline{ color:var(--accent); }
+
+  /* ---- tags ---- */
+  .tag{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase;
+    padding:3px 7px; border-radius:2px; white-space:nowrap;
+  }
+  .tag::before{ content:''; width:6px; height:6px; border-radius:50%; }
+  .tag-issue{ background:var(--accent-soft); color:var(--accent); }
+  .tag-issue::before{ background:var(--accent); }
+  .tag-gap{ background:var(--gap-soft-bg); color:var(--gap-soft); }
+  .tag-gap::before{ background:var(--gap-soft); }
+  .tag-working{ background:var(--good-soft); color:var(--good); }
+  .tag-working::before{ background:var(--good); }
+
+  /* ---- redline callout ---- */
+  .redline{
+    display:flex; gap:12px; margin:16px 0; padding:12px 14px;
+    background:var(--paper-raised); border-left:2px solid var(--accent);
+    border-radius:0 2px 2px 0; box-shadow:var(--shadow);
+  }
+  .redline .mark{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600;
+    color:var(--accent); flex-shrink:0; padding-top:2px;
+  }
+  .redline p{ margin:0; font-size:14.5px; }
+
+  /* ---- survey table ---- */
+  .table-wrap{ overflow-x:auto; margin:18px 0 8px; border:1px solid var(--line-strong); border-radius:3px; }
+  table{ width:100%; border-collapse:collapse; min-width:640px; background:var(--paper-raised); }
+  thead th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);
+    padding:10px 14px; border-bottom:1px solid var(--line-strong);
+  }
+  tbody td{
+    padding:12px 14px; border-bottom:1px solid var(--line); font-size:14px;
+    vertical-align:top; line-height:1.5;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  td.sheet-name{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; white-space:nowrap; }
+  td.status{ white-space:nowrap; }
+
+  /* ---- sitemap diagrams ---- */
+  .sitemap-grid{ display:grid; grid-template-columns:1fr; gap:28px; margin:20px 0; }
+  @media(min-width:760px){ .sitemap-grid{ grid-template-columns:1fr 1fr; } }
+  .sitemap-card{ background:var(--paper-raised); border:1px solid var(--line-strong); border-radius:3px; padding:16px; }
+  .sitemap-card h4{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink-soft); margin:0 0 12px;
+  }
+  .sitemap-card svg{ width:100%; height:auto; display:block; }
+  .node-box{ fill:var(--paper-raised); stroke:var(--line-strong); stroke-width:1; }
+  .node-box.dupe{ stroke:var(--accent); stroke-dasharray:3 2; }
+  .node-box.new{ stroke:var(--good); }
+  .node-text{ font-family:'IBM Plex Mono', monospace; fill:var(--ink); }
+  .node-sub{ font-family:'IBM Plex Mono', monospace; fill:var(--ink-soft); }
+  .edge{ stroke:var(--line-strong); stroke-width:1; fill:none; }
+  .dupe-edge{ stroke:var(--accent); stroke-width:1; stroke-dasharray:3 2; fill:none; }
+
+  /* ---- roadmap ---- */
+  .phase{ margin:14px 0 22px; border:1px solid var(--line-strong); border-radius:3px; overflow:hidden; }
+  .phase-head{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:12px 16px; background:var(--paper-raised); border-bottom:1px solid var(--line);
+  }
+  .phase-head h4{ margin:0; font-family:'IBM Plex Sans Condensed',sans-serif; font-weight:600; font-size:16px; }
+  .phase-head span{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; }
+  .phase ul{ margin:0; padding:14px 16px 14px 34px; list-style:none; }
+  .phase li{ position:relative; padding:6px 0; font-size:14.5px; line-height:1.55; }
+  .phase li::before{
+    content:'☐'; position:absolute; left:-24px; top:6px; color:var(--ink-soft); font-size:14px;
+  }
+
+  footer{
+    max-width:920px; margin:60px auto 0; padding:20px 28px 40px;
+    border-top:1px solid var(--line-strong); font-family:'IBM Plex Mono', monospace;
+    font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+
+  @media (max-width:600px){
+    nav.toc{ display:none; }
+  }
+</style>
+
+<header class="title-block">
+  <div class="tb-meta">
+    <span>Tingen Creative &middot; tingencreative.com</span>
+    <span>Rev. A &middot; 03 Sep 2026</span>
+  </div>
+  <h1 class="doc-title">Site Audit &amp; Rebuild Brief</h1>
+  <p class="doc-sub">A survey of current conditions across the six pages live today, redlined against what a commercial&nbsp;real&nbsp;estate, development, and construction audience needs to move from visitor to booked call &mdash; and a punch list to close the gap.</p>
+  <nav class="toc">
+    <a href="#summary">Summary</a>
+    <a href="#survey">As-Built Survey</a>
+    <a href="#positioning">Positioning &amp; Story</a>
+    <a href="#sitemap">Sitemap Redline</a>
+    <a href="#content">Content &amp; Messaging</a>
+    <a href="#offers">Offer Stack</a>
+    <a href="#portfolio">Portfolio Triage</a>
+    <a href="#leadgen">Lead Generation</a>
+    <a href="#technical">Technical &amp; SEO</a>
+    <a href="#roadmap">Punch List</a>
+  </nav>
+</header>
+
+<main class="sheet">
+
+<section id="summary">
+  <p class="sheet-no">SHEET 01</p>
+  <h2>Executive Summary</h2>
+  <p class="lede">The foundation is solid &mdash; a real 20-year track record, a recognizable client roster (CBRE, Seefried, Apex Industrial, Beacon Communities), and a blog that's actually current. What's missing is proof and paths: the site asserts expertise but rarely shows the work behind it, and it offers exactly one way to convert &mdash; book a call &mdash; with nothing for a visitor who isn't ready for that yet.</p>
+  <div class="redline">
+    <span class="mark">01</span>
+    <p><strong>Three repeated sections, one job each missing.</strong> The client logo wall and "Featured Work" appear on Home, About, and Work with overlapping names (Seefried, Apex, Hailey, Manor Lakes). Three pages doing the same job means none of them does its own job well.</p>
+  </div>
+  <div class="redline">
+    <span class="mark">02</span>
+    <p><strong>No proof of outcomes.</strong> The hero promises "Speed ROI." Nothing on the site &mdash; not the Work page, not a single case study &mdash; shows a result. For a niche this data-literate (CRE, brokerage, development), that's the gap most likely costing qualified leads.</p>
+  </div>
+  <div class="redline">
+    <span class="mark">03</span>
+    <p><strong>One conversion path.</strong> Every CTA on every page is "Book a call with Warren." That's the right ask for a ready buyer and the wrong ask for everyone still researching &mdash; which, for a five-figure branding engagement, is most first-time visitors.</p>
+  </div>
+</section>
+
+<section id="survey">
+  <p class="sheet-no">SHEET 02</p>
+  <h2>As-Built Survey</h2>
+  <p class="lede">Current condition of each page, page by page.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Page</th><th>What's there</th><th>Status</th><th>Finding</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sheet-name">Home</td>
+          <td>Hero, client logos, 3 testimonials, 3 featured projects</td>
+          <td class="status"><span class="tag tag-issue">Issue</span></td>
+          <td>Headline ("Improve Deals, Speed ROI") leads with a promise, not proof. Logos and featured work duplicate About and Work almost exactly.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">Services &gt; Brand Building</td>
+          <td>3-phase process: Strategy &rarr; Creative &rarr; Measurement</td>
+          <td class="status"><span class="tag tag-gap">Gap</span></td>
+          <td>No price range, tier, or timeline. This is the flagship service and it's the least self-serve page on the site.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">Services &gt; Monthly Marketing</td>
+          <td>Two tiers, $3,500 &amp; $4,995/mo, Stripe checkout, "Join Today"</td>
+          <td class="status"><span class="tag tag-working">Working</span></td>
+          <td>Clear scope, clear price, clear next step. This is structurally the best-converting page on the site &mdash; use it as the template for Brand Building.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">Work</td>
+          <td>12 projects, name-only links to individual pages</td>
+          <td class="status"><span class="tag tag-gap">Gap</span></td>
+          <td>No challenge/approach/result framing and no metrics on the index itself &mdash; a visitor has to click blind into every project to find out what was actually done.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">About</td>
+          <td>Founder bio (20+ yrs), client list, featured work</td>
+          <td class="status"><span class="tag tag-issue">Issue</span></td>
+          <td>Strong bio, but two-thirds of the page repeats Home and Work. No team beyond the founder, no description of how engagements actually run.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">Blog</td>
+          <td>12 posts since Dec 2024, AI &times; CRE &times; branding topics</td>
+          <td class="status"><span class="tag tag-working">Working</span></td>
+          <td>Genuinely current and on-topic for the niche. Also the most underused asset &mdash; no CTA, no related-service link, no email capture on any post.</td>
+        </tr>
+        <tr>
+          <td class="sheet-name">Contact</td>
+          <td>Form with service-type and budget-range qualifiers</td>
+          <td class="status"><span class="tag tag-issue">Issue</span></td>
+          <td>The budget qualifier is a nice touch, but no phone number, email, or location is listed anywhere on the site &mdash; the form is the only door in.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="positioning">
+  <p class="sheet-no">SHEET 03</p>
+  <h2>Positioning &amp; Story</h2>
+  <p>The homepage tag reads <strong>"Commercial &middot; Development &middot; Construction."</strong> The About page's own client list tells a wider story: alongside CBRE, Seefried, Apex Industrial, SVN, and Capital Development Partners sit Tanner Health System, West Georgia Urology, Tingen Law, and Your Haven Recovery &mdash; healthcare, legal, and treatment clients with no mention anywhere in the positioning. In context that's not a muddled brand &mdash; it's a business that took good work wherever it came from while the LLC got off the ground (2021&ndash;present), sitting on top of a much deeper, narrower CRE history underneath.</p>
+  <div class="redline">
+    <span class="mark">04</span>
+    <p><strong>Pick a lane, don't erase the rest.</strong> Real estate, development, and construction are the strongest logo density and the sharpest story to tell &mdash; a niche buyer trusts a specialist over a generalist. Keep that as the primary positioning and add industry-specific pages for it (below). Fold the other verticals into a quiet "and beyond real estate" credibility line rather than diluting the hero.</p>
+  </div>
+  <div class="redline">
+    <span class="mark">05</span>
+    <p><strong>The real differentiator is buried.</strong> In-house brand at CBRE from 2003&ndash;2009, then freelancing exclusively for CRE clients from 2009&ndash;2021, before forming the LLC in 2021. That's not "20+ years in marketing" &mdash; that's most of two decades <em>inside</em> the industry you're now positioning for, at one of the largest names in it. CBRE is also a current client logo on Home. "I started in brand at CBRE. Today, CBRE is a client" is a stronger opening line than anything currently on the site, and it belongs in the hero or the first line of About, not buried in a bio paragraph.</p>
+  </div>
+</section>
+
+<section id="sitemap">
+  <p class="sheet-no">SHEET 04</p>
+  <h2>Sitemap Redline</h2>
+  <p class="lede">Current structure repeats itself across pages with no room for a visitor who isn't ready to book. Proposed structure gives every page one job and adds two: an industry entry point and a low-commitment way in.</p>
+  <div class="sitemap-grid">
+    <div class="sitemap-card">
+      <h4>Current &mdash; as built</h4>
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+        <rect class="node-box" x="140" y="6" width="120" height="30" rx="2"/>
+        <text class="node-text" x="200" y="25" font-size="11" text-anchor="middle">HOME</text>
+        <path class="edge" d="M200,36 V56"/>
+        <path class="edge" d="M200,56 H60 V80"/>
+        <path class="edge" d="M200,56 V80"/>
+        <path class="edge" d="M200,56 H340 V80"/>
+        <rect class="node-box" x="8" y="80" width="104" height="30" rx="2"/>
+        <text class="node-text" x="60" y="99" font-size="10" text-anchor="middle">SERVICES</text>
+        <rect class="node-box" x="148" y="80" width="104" height="30" rx="2"/>
+        <text class="node-text" x="200" y="99" font-size="10" text-anchor="middle">WORK</text>
+        <rect class="node-box" x="288" y="80" width="104" height="30" rx="2"/>
+        <text class="node-text" x="340" y="99" font-size="10" text-anchor="middle">ABOUT</text>
+        <path class="edge" d="M200,56 H480" opacity="0"/>
+        <rect class="node-box" x="8" y="128" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="60" y="145" font-size="9" text-anchor="middle">BRAND BUILDING</text>
+        <rect class="node-box" x="8" y="162" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="60" y="179" font-size="9" text-anchor="middle">MONTHLY MKTG</text>
+        <path class="edge" d="M60,110 V128"/>
+        <path class="edge" d="M60,154 V162"/>
+        <rect class="node-box" x="148" y="128" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="200" y="145" font-size="9" text-anchor="middle">BLOG</text>
+        <path class="edge" d="M200,110 V128"/>
+        <rect class="node-box" x="148" y="230" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="200" y="247" font-size="9" text-anchor="middle">CONTACT</text>
+        <path class="edge" d="M200,56 V244 H148"/>
+        <rect class="node-box dupe" x="288" y="128" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="340" y="145" font-size="9" text-anchor="middle">CLIENT LOGOS</text>
+        <rect class="node-box dupe" x="288" y="162" width="104" height="26" rx="2"/>
+        <text class="node-sub" x="340" y="179" font-size="9" text-anchor="middle">FEATURED WORK</text>
+        <path class="edge" d="M340,110 V128"/>
+        <path class="edge" d="M340,154 V162"/>
+        <path class="dupe-edge" d="M112,142 C 170,270 170,270 288,142"/>
+        <path class="dupe-edge" d="M112,142 C 170,300 170,300 288,176"/>
+        <path class="dupe-edge" d="M60,143 C 60,280 320,280 340,176"/>
+        <text class="node-sub" x="200" y="300" font-size="9" text-anchor="middle" fill="var(--accent)">- - - same content, three sheets</text>
+      </svg>
+    </div>
+    <div class="sitemap-card">
+      <h4>Proposed &mdash; redrawn</h4>
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
+        <rect class="node-box" x="140" y="6" width="120" height="30" rx="2"/>
+        <text class="node-text" x="200" y="25" font-size="11" text-anchor="middle">HOME</text>
+        <path class="edge" d="M200,36 V56"/>
+        <path class="edge" d="M200,56 H30 V80"/>
+        <path class="edge" d="M200,56 H140 V80"/>
+        <path class="edge" d="M200,56 V80"/>
+        <path class="edge" d="M200,56 H260 V80"/>
+        <path class="edge" d="M200,56 H370 V80"/>
+        <rect class="node-box" x="0" y="80" width="60" height="30" rx="2"/>
+        <text class="node-text" x="30" y="99" font-size="9" text-anchor="middle">SERVICES</text>
+        <rect class="node-box new" x="110" y="80" width="60" height="30" rx="2"/>
+        <text class="node-text" x="140" y="99" font-size="9" text-anchor="middle">INDUSTRIES</text>
+        <rect class="node-box" x="170" y="80" width="60" height="30" rx="2"/>
+        <text class="node-text" x="200" y="99" font-size="9" text-anchor="middle">WORK</text>
+        <rect class="node-box" x="230" y="80" width="60" height="30" rx="2"/>
+        <text class="node-text" x="260" y="99" font-size="9" text-anchor="middle">ABOUT</text>
+        <rect class="node-box new" x="340" y="80" width="60" height="30" rx="2"/>
+        <text class="node-text" x="370" y="99" font-size="9" text-anchor="middle">RESOURCES</text>
+
+        <rect class="node-box" x="0" y="128" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="30" y="144" font-size="8" text-anchor="middle">BRAND STRATEGY</text>
+        <rect class="node-box" x="0" y="158" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="30" y="174" font-size="8" text-anchor="middle">MONTHLY MKTG</text>
+        <path class="edge" d="M30,110 V128"/>
+        <path class="edge" d="M30,152 V158"/>
+
+        <rect class="node-box new" x="110" y="128" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="140" y="144" font-size="7.5" text-anchor="middle">CRE &amp; BROKERAGE</text>
+        <rect class="node-box new" x="110" y="158" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="140" y="174" font-size="8" text-anchor="middle">DEVELOPMENT</text>
+        <rect class="node-box new" x="110" y="188" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="140" y="204" font-size="8" text-anchor="middle">CONSTRUCTION</text>
+        <path class="edge" d="M140,110 V128"/>
+        <path class="edge" d="M140,152 V158"/>
+        <path class="edge" d="M140,182 V188"/>
+
+        <rect class="node-box" x="170" y="128" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="200" y="144" font-size="7.5" text-anchor="middle">CASE STUDIES</text>
+        <path class="edge" d="M200,110 V128"/>
+
+        <rect class="node-box" x="230" y="128" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="260" y="144" font-size="8" text-anchor="middle">STORY</text>
+        <path class="edge" d="M260,110 V128"/>
+
+        <rect class="node-box new" x="340" y="128" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="370" y="144" font-size="8" text-anchor="middle">GUIDES</text>
+        <rect class="node-box" x="340" y="158" width="60" height="24" rx="2"/>
+        <text class="node-sub" x="370" y="174" font-size="8" text-anchor="middle">BLOG</text>
+        <path class="edge" d="M370,110 V128"/>
+        <path class="edge" d="M370,152 V158"/>
+
+        <rect class="node-box" x="170" y="260" width="60" height="26" rx="2"/>
+        <text class="node-sub" x="200" y="277" font-size="8" text-anchor="middle">CONTACT</text>
+        <path class="edge" d="M200,56 V273 H170"/>
+        <text class="node-sub" x="200" y="305" font-size="8" text-anchor="middle" fill="var(--good)">phone + email + form</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="content">
+  <p class="sheet-no">SHEET 05</p>
+  <h2>Content &amp; Messaging</h2>
+
+  <h3>Home</h3>
+  <p>Replace the standalone tagline headline with a headline-plus-proof pairing: keep "Improve Deals, Speed ROI" if you like the line, but sit it next to one hard number in the hero itself &mdash; years in practice, brands built, or client count &mdash; instead of leaving that proof for the About page. Cut the logo wall and featured-work grid down to a tight highlight (3&ndash;4 logos, one flagship project) and send the rest of the traffic to Work, where it now has a real home.</p>
+
+  <h3>Services &gt; Brand Building</h3>
+  <p>Mirror what already works on Monthly Marketing: turn the process into scoped offers. Something like <em>New Brand Launch</em>, <em>Rebrand / Repositioning</em>, and <em>Property or Development Brand</em>, each with a starting-at price or range and a typical timeline. A visitor comparing a $3,500/mo retainer against an unpriced project service will default to the retainer &mdash; not because it's the better fit, just because it's the only one they can evaluate without a call.</p>
+
+  <h3>Work</h3>
+  <p>Give the 3&ndash;4 strongest projects (Seefried, Apex Industrial, Manor Lakes are already the recurring names across the site &mdash; they're clearly the proudest work) a Challenge / Approach / Result treatment with one measurable outcome each, even a directional one ("cut lease-up time," "unified 6 sub-brands under one identity"). Keep the remaining projects as a lighter visual grid underneath.</p>
+
+  <h3>About</h3>
+  <p>Drop the repeated client list and featured work. Keep the founder bio as the credibility anchor, and add what's missing: how an engagement actually runs day to day, who a client works with, and whether there's a team beyond Warren for larger scopes.</p>
+
+  <h3>Blog</h3>
+  <p>The content itself is in good shape &mdash; keep the AI &times; CRE &times; branding angle, it's genuinely differentiated. Every post needs a closing block: a related-service link and an email or resource capture, so the traffic this content already earns doesn't leave empty-handed.</p>
+
+  <h3>Contact</h3>
+  <p>Add a phone number, email address, and general location near the form &mdash; not everyone wants to fill out a qualifier form before they can reach a human, and the absence reads as harder to reach than a 20-year firm should be. Add one line of reassurance after the form fields: what happens next and how fast.</p>
+</section>
+
+<section id="offers">
+  <p class="sheet-no">SHEET 06</p>
+  <h2>Offer Stack</h2>
+  <p class="lede">Three documents you provided answer most of the pricing and lead-magnet gaps directly &mdash; the work exists, it just isn't on the site.</p>
+
+  <h3>Built Brand Foundations &rarr; becomes the priced Brand Building page</h3>
+  <p>This is exactly the scoped-tiers structure the audit called for. Three phases, each with a fixed price and a clear deliverable list:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>Timeline</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr><td class="sheet-name">I &middot; Brand Master Plan</td><td>2&ndash;4 weeks</td><td>$15,000</td></tr>
+        <tr><td class="sheet-name">II &middot; Brand Build</td><td>2&ndash;3 weeks</td><td>$30,000*</td></tr>
+        <tr><td class="sheet-name">III &middot; Brand Capstone</td><td>4 weeks</td><td>$15,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Put these three cards on the Services &gt; Brand Building page in place of the current unpriced process description. Fixed numbers next to a fixed deliverable list is precisely what makes Monthly Marketing the best-converting page today &mdash; this gives Brand Building the same clarity.</p>
+
+  <h3>Services &amp; Rates &rarr; becomes the à la carte reference</h3>
+  <p>The full rate card (Brand Strategy $5&ndash;25k, Logo Design $5&ndash;20k, Web Design $5&ndash;50k, Video $2&ndash;80k, $125/hr, etc.) is too wide-ranging to lead with &mdash; a visitor comparing a $2k service against an $80k one in the same list has no way to self-qualify. Use it as a secondary, downloadable reference for custom or single-item scopes ("just need a logo," "just need the website") rather than the primary pricing display. Built Brand Foundations stays the headline offer; this is the a-la-carte menu underneath it.</p>
+
+  <h3>Real Brand Review &rarr; becomes the lead magnet</h3>
+  <p>This already solves the "no low-commitment path" problem from the original audit &mdash; it just needs to move off a static, print-and-circle PDF and onto the site.</p>
+  <div class="redline">
+    <span class="mark">06</span>
+    <p><strong>Rebuild it as an on-page interactive scorecard.</strong> Same six categories, same 1&ndash;5 questions, same score bands &mdash; but auto-tallied on submit instead of hand-added, gated behind an email address, and ending on the score-band copy that's already written ("Scored 69 or below? ... Did you score above 70? Congratulations!"). That copy already pivots straight into a call-to-action by score band &mdash; it's a ready-made nurture sequence, not just a PDF.</p>
+  </div>
+</section>
+
+<section id="portfolio">
+  <p class="sheet-no">SHEET 07</p>
+  <h2>Portfolio Triage</h2>
+  <p class="lede">Sorting the current 12-project Work page by fit with the CRE / development / construction niche, based on names alone &mdash; confirm the ones marked unclear.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Project</th><th>Fit</th></tr></thead>
+      <tbody>
+        <tr><td class="sheet-name">Seefried Industrial Properties</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">Apex Industrial</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">Capital Development Partners</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">SVN Knoxville Report</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">SVN Marketing Report</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">ORIStruts</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">dress gray</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">Horizon Living</td><td><span class="tag tag-working">Feature first</span></td></tr>
+        <tr><td class="sheet-name">Manor Lakes</td><td><span class="tag tag-gap">Adjacent</span></td></tr>
+        <tr><td class="sheet-name">Hailey Realty</td><td><span class="tag tag-gap">Adjacent</span></td></tr>
+        <tr><td class="sheet-name">UFB</td><td><span class="tag tag-issue">Off-niche</span></td></tr>
+        <tr><td class="sheet-name">Saibhreas</td><td><span class="tag tag-issue">Off-niche</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>With names attached, the fit is better than it looked: <strong>dress gray</strong> (construction management, full rebrand) and <strong>Horizon Living</strong> (senior living development) move to feature-first &mdash; between them they cover the "Construction" and "Development" thirds of the positioning directly. That's 8 of 12 projects now in-niche or adjacent, and only 2 (UFB, a concession-vendor rebrand and site build; Saibhreas, a financial-portfolio identity) are genuinely off-niche &mdash; keep those as quiet range-of-craft proof, not on the front of Work.</p>
+  <div class="redline">
+    <span class="mark">07</span>
+    <p><strong>The 2003&ndash;2021 work is confirmed partially usable.</strong> Some CBRE-era and early-freelance work can be shown or described. Six in-house years at CBRE and twelve freelancing directly for CRE clients is a deep well &mdash; worth a pass to pull whatever's clear to use, even narratively (challenge/approach/result in prose) where the original files or agency ownership rule out showing the actual assets.</p>
+  </div>
+</section>
+
+<section id="leadgen">
+  <p class="sheet-no">SHEET 08</p>
+  <h2>Lead Generation</h2>
+  <div class="redline">
+    <span class="mark">08</span>
+    <p><strong>One CTA, one funnel stage &mdash; fixable with what already exists.</strong> "Book a call with Warren" is the right ask for someone ready to spend five figures on a rebrand. It's the wrong first ask for someone still comparing agencies. The Real Brand Review (see Offer Stack) is the low-commitment path this needed &mdash; it just has to move onto the site, gated behind an email address, feeding into the eventual call.</p>
+  </div>
+  <div class="redline">
+    <span class="mark">09</span>
+    <p><strong>Testimonials are thin and undifferentiated.</strong> Three quotes, all reading similarly, one with what looks like a scraping typo on the name ("Tony Gimbroneone" &mdash; worth checking the source). Expand to 6&ndash;8 and tag them by vertical, so a construction-firm visitor sees a construction testimonial instead of only brokerage ones.</p>
+  </div>
+  <div class="redline">
+    <span class="mark">10</span>
+    <p><strong>No proof numbers anywhere on the site.</strong> Six years at CBRE, twelve more freelancing exclusively for CRE clients, five years running the LLC &mdash; that's a real stat bar and a real timeline, not just a "20+ years" line. Right now that story only lives in one paragraph on About.</p>
+  </div>
+</section>
+
+<section id="technical">
+  <p class="sheet-no">SHEET 09</p>
+  <h2>Technical &amp; SEO</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Item</th><th>Current state</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="sheet-name">Meta description</td><td>Not present on the homepage source</td><td><span class="tag tag-issue">Issue</span></td></tr>
+        <tr><td class="sheet-name">Open Graph tags</td><td>None found &mdash; shared links will render without a title/image preview</td><td><span class="tag tag-issue">Issue</span></td></tr>
+        <tr><td class="sheet-name">Title tag</td><td>Generic tagline sitewide ("Creative Challenges require Creative Solutions"), not vertical-specific</td><td><span class="tag tag-gap">Gap</span></td></tr>
+        <tr><td class="sheet-name">Structured data</td><td>No ProfessionalService/LocalBusiness schema detected</td><td><span class="tag tag-gap">Gap</span></td></tr>
+        <tr><td class="sheet-name">sitemap.xml</td><td>Returns a 301 redirect &mdash; confirm the final target resolves cleanly</td><td><span class="tag tag-gap">Gap</span></td></tr>
+        <tr><td class="sheet-name">robots.txt</td><td>Present, 200 OK</td><td><span class="tag tag-working">Working</span></td></tr>
+        <tr><td class="sheet-name">Load time</td><td>~0.2s to first byte on the homepage</td><td><span class="tag tag-working">Working</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="roadmap">
+  <p class="sheet-no">SHEET 10</p>
+  <h2>Punch List</h2>
+  <p class="lede">Sequenced by effort against impact &mdash; close these out in order rather than all at once.</p>
+
+  <div class="phase">
+    <div class="phase-head"><h4>Phase 1 &mdash; Ship what already exists</h4><span>1&ndash;2 weeks</span></div>
+    <ul>
+      <li>Put Built Brand Foundations' three priced phases on the Brand Building page</li>
+      <li>Rewrite the About/Home opening around the CBRE &rarr; freelance &rarr; LLC timeline</li>
+      <li>Add meta descriptions and Open Graph tags to every page</li>
+      <li>Add phone, email, and location to the Contact page and footer</li>
+      <li>Rewrite the homepage title tag with vertical-specific keywords</li>
+      <li>Trim the duplicated client-logo / featured-work blocks on Home and About</li>
+      <li>Fact-check testimonial names before expanding them</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h4>Phase 2 &mdash; Rebuild the proof</h4><span>4&ndash;8 weeks</span></div>
+    <ul>
+      <li>Convert the Real Brand Review into an on-site interactive scorecard with email capture</li>
+      <li>Turn the CRE-aligned Work projects (Seefried, Apex, Capital Development Partners, dress gray, Horizon Living, SVN, ORIStruts) into Challenge / Approach / Result case studies</li>
+      <li>Pull the confirmed-usable pre-2021 CBRE/freelance work into the portfolio, narratively where assets can't be shown</li>
+      <li>Publish the Services &amp; Rates sheet as the à la carte reference beneath Built Brand Foundations</li>
+      <li>Build the three Industries pages (CRE &amp; Brokerage, Development, Construction)</li>
+      <li>Add a stat bar (years, brands, industries) to Home</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <div class="phase-head"><h4>Phase 3 &mdash; Build the engine</h4><span>Ongoing</span></div>
+    <ul>
+      <li>Add related-service CTAs and email capture to every blog post</li>
+      <li>Expand testimonials to 6&ndash;8, tagged by industry</li>
+      <li>Add ProfessionalService structured data sitewide</li>
+      <li>Stand up a Resources section as the home for future guides and checklists</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>Tingen Creative &middot; Site Audit &amp; Rebuild Brief</span>
+  <span>Sheet 10 of 10</span>
+</footer>
