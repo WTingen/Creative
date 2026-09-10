@@ -103,8 +103,12 @@ const featured = [
 
   <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-24">
     <div class="grid sm:grid-cols-2 gap-6 sm:gap-8">
-      {featured.map((project) => (
-        <a href={`/work/${project.slug}`} class="group block rounded-2xl border border-tc-line bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+      {featured.map((project, i) => (
+        <a
+          href={`/work/${project.slug}`}
+          class="reveal group block rounded-2xl border border-tc-line bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+          style={`transition-delay: ${(i % 2) * 120}ms;`}
+        >
           <Image
             src={project.image}
             alt={project.alt}
@@ -140,3 +144,45 @@ const featured = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cards = document.querySelectorAll<HTMLElement>('.reveal');
+
+  if (prefersReducedMotion) {
+    cards.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    cards.forEach((el) => observer.observe(el));
+  }
+</script>
+

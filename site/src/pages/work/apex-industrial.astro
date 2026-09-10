@@ -1,6 +1,9 @@
 ---
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
 import apexFeature from '../../assets/images/work/apex-feature.webp';
+import apexStyleGuide from '../../assets/images/work/apex-tile-styleguide.webp';
+import apexColors from '../../assets/images/work/apex-tile-colors.webp';
+import apexBillboard from '../../assets/images/work/apex-tile-billboard.webp';
 ---
 <CaseStudyLayout
   client="Apex Industrial"
@@ -9,6 +12,12 @@ import apexFeature from '../../assets/images/work/apex-feature.webp';
   path="/work/apex-industrial"
   heroImage={apexFeature}
   heroImageAlt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
+  squareImage1={apexStyleGuide}
+  squareImage1Alt="Apex Industrial Brand Identity Guidelines cover"
+  squareImage2={apexColors}
+  squareImage2Alt="Apex Industrial brand color palette"
+  rectImage={apexBillboard}
+  rectImageAlt="Apex Industrial leasing billboard"
   servicesUsed={['Brand Alignment']}
   challenge="Apex Industrial already had a logo and a color palette, but nothing tying the two together as the company grew — no codified system for how the brand should show up across materials, from one deal to the next."
   approach="Rather than starting over, Tingen Creative worked with the existing assets: gathering Apex's scattered materials, aligning them into a consistent system, and codifying the brand standards that were missing from day one."
