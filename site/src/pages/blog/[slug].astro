@@ -1,0 +1,169 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmailCapture from '../../components/EmailCapture.astro';
+import { SITE_URL, BUSINESS_NAME, CALENDLY_URL } from '../../lib/contact';
+import postsData from '../../data/posts.json';
+
+interface Post {
+  title: string;
+  slug: string;
+  date: string;
+  dateDisplay: string;
+  excerpt: string;
+  body: string;
+  readingTime: number;
+  image: string;
+}
+
+export function getStaticPaths() {
+  return (postsData as Post[]).map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: Post };
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/blog/*',
+  { eager: true }
+);
+const heroImage = images[`../../assets/images/blog/${post.image}`]?.default;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.excerpt,
+  datePublished: post.date,
+  author: { '@type': 'Person', name: 'Warren Tingen' },
+  publisher: { '@type': 'Organization', name: BUSINESS_NAME, url: SITE_URL },
+  mainEntityOfPage: new URL(`/blog/${post.slug}`, SITE_URL).toString(),
+};
+---
+<BaseLayout
+  title={post.title}
+  description={post.excerpt}
+  path={`/blog/${post.slug}`}
+  ogImage={heroImage?.src}
+  ogType="article"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  </Fragment>
+
+  <article class="mx-auto max-w-3xl px-4 sm:px-6 pt-14 sm:pt-20 pb-16 sm:pb-24">
+    <a href="/blog" class="inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity mb-6">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      All posts
+    </a>
+    <p class="text-xs font-bold uppercase tracking-wide text-tc-gray">
+      {post.dateDisplay} · {post.readingTime} min read
+    </p>
+    <h1 class="mt-3 text-3xl sm:text-4xl font-black leading-[1.1] text-tc-ink text-balance">
+      {post.title}
+    </h1>
+
+    <Image
+      src={heroImage}
+      alt={post.title}
+      class="mt-8 rounded-2xl shadow-lg w-full aspect-video object-cover"
+      width={900}
+      loading="eager"
+      fetchpriority="high"
+    />
+
+    <div class="blog-content mt-10" set:html={post.body} />
+
+    <div class="mt-14">
+      <EmailCapture source="blog" detail={post.slug} />
+    </div>
+
+    <div class="mt-8 rounded-2xl bg-tc-gray p-6 sm:p-8 text-center">
+      <h3 class="text-lg font-black text-white">Have a brand that needs this kind of clarity?</h3>
+      <p class="mt-2 text-sm text-gray-300">Start with a free Brand Review, or book a call to talk it through.</p>
+      <div class="mt-5 flex flex-col sm:flex-row justify-center gap-3">
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+        <a
+          href="/brand-review"
+          class="inline-flex justify-center items-center text-sm font-bold text-white border-2 border-white rounded-xl px-6 py-3 hover:bg-white hover:text-tc-gray transition-colors"
+        >
+          Take the Free Brand Review
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-content :global(p) {
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+    color: var(--color-tc-gray);
+  }
+  .blog-content :global(h2) {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--color-tc-ink);
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+  .blog-content :global(h3) {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--color-tc-ink);
+    margin-top: 1.75em;
+    margin-bottom: 0.5em;
+  }
+  .blog-content :global(ul),
+  .blog-content :global(ol) {
+    margin: 0 0 1.25em 1.5em;
+    color: var(--color-tc-gray);
+    line-height: 1.75;
+  }
+  .blog-content :global(ul) {
+    list-style: disc;
+  }
+  .blog-content :global(ol) {
+    list-style: decimal;
+  }
+  .blog-content :global(li) {
+    margin-bottom: 0.4em;
+  }
+  .blog-content :global(a) {
+    color: var(--color-tc-orange);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .blog-content :global(strong) {
+    font-weight: 700;
+    color: var(--color-tc-ink);
+  }
+  .blog-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+    font-size: 0.9rem;
+  }
+  .blog-content :global(td),
+  .blog-content :global(th) {
+    border: 1px solid var(--color-tc-line);
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+  .blog-content :global(figure) {
+    margin: 0 0 1.25em;
+  }
+</style>

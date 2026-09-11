@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tingencreative.com/sitemap-index.xml

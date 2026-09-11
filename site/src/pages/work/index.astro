@@ -1,0 +1,188 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import apexFeature from '../../assets/images/work/apex-feature.webp';
+import seefriedFeature from '../../assets/images/work/seefried-feature.webp';
+import dressgrayFeature from '../../assets/images/work/dressgray-feature.webp';
+import horizonFeature from '../../assets/images/work/horizon-feature.webp';
+import cdpFeature from '../../assets/images/work/cdp-feature.webp';
+import svnFeature from '../../assets/images/work/svn-feature.webp';
+import svnKnoxvilleFeature from '../../assets/images/work/svn-knoxville-feature.webp';
+import manorLakeFeature from '../../assets/images/work/manorlake-booklet-feature.webp';
+
+const featured = [
+  {
+    name: 'Apex Industrial',
+    slug: 'apex-industrial',
+    image: apexFeature,
+    alt: 'Apex Industrial — aerial view of an industrial property with the Apex Industrial logo',
+    challenge: 'A logo and colors, but no codified brand as the company grew.',
+    approach: 'Aligned scattered materials into one real brand system.',
+    result: 'Grew from two people into a full industrial advisory.',
+  },
+  {
+    name: 'Capital Development Partners',
+    slug: 'capital-development-partners',
+    image: cdpFeature,
+    alt: 'Capital Development Partners logo over an aerial view of a shipping port',
+    challenge: 'Brand elements in place, but nothing consolidated.',
+    approach: 'Consolidated it into one style guide and pitch deck.',
+    result: 'A consistent brand across every future collaboration.',
+  },
+  {
+    name: 'Seefried Industrial Properties',
+    slug: 'seefried-industrial-properties',
+    image: seefriedFeature,
+    alt: 'Seefried Industrial Properties brochure mockup',
+    challenge: 'Leasing collateral that moves as fast as the deals.',
+    approach: 'An ongoing monthly retainer, request after request.',
+    result: 'More than a decade and counting.',
+  },
+  {
+    name: 'Manor Lake',
+    slug: 'manor-lake',
+    image: manorLakeFeature,
+    alt: 'Manor Lake booklet cover — Where You Live',
+    challenge: 'Marketing collateral that needed to feel consistent, piece to piece.',
+    approach: 'Infused the brand across every tactic they needed.',
+    result: "Now the standard their in-house team runs every facility's marketing from.",
+  },
+  {
+    name: 'Horizon Living',
+    slug: 'horizon-living',
+    image: horizonFeature,
+    alt: 'Horizon Living monument sign, a Manor Lake Independent Living Community',
+    challenge: "An identity that didn't match its audience or the Manor Lake brand.",
+    approach: 'Realigned the identity, then built out signage, brochures, and rack cards.',
+    result: "One of Tingen Creative's largest engagements to date.",
+  },
+  {
+    name: 'SVN | Stone Commercial Real Estate',
+    slug: 'svn-central-kentucky',
+    image: svnFeature,
+    alt: 'SVN Industrial Market Report, Central Kentucky',
+    challenge: 'Needed a market report that could travel anywhere.',
+    approach: 'Designed a report built for print, digital, and social.',
+    result: 'Well received across the region, by SVN and its clients.',
+  },
+  {
+    name: 'SVN | Wood Properties',
+    slug: 'svn-knoxville',
+    image: svnKnoxvilleFeature,
+    alt: 'SVN Wood Properties Greater Knoxville Industrial Market Report',
+    challenge: 'Needed a report that generated real excitement.',
+    approach: 'A market report built for both digital and print.',
+    result: 'Reused by the team quarter after quarter.',
+  },
+  {
+    name: 'dress gray',
+    slug: 'dress-gray',
+    image: dressgrayFeature,
+    alt: 'dress gray branded hard hat',
+    challenge: 'Wanted strategic thinking, not just a new logo.',
+    approach: 'Discovery and a brand workshop, written into a roadmap.',
+    result: 'A documented strategy to build the brand from.',
+  },
+];
+---
+<BaseLayout
+  title="Work"
+  description="Case studies from Tingen Creative — commercial real estate, development, and construction brands built and aligned over 20 years."
+  path="/work"
+>
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-12 sm:pb-16">
+    <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">Work</p>
+    <h1 class="text-4xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance max-w-2xl">
+      Real brands, real commercial real estate.
+    </h1>
+    <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+      A sample of the work — what each client walked in with, what changed, and
+      where they ended up.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-24">
+    <div class="grid sm:grid-cols-2 gap-6 sm:gap-8">
+      {featured.map((project, i) => (
+        <a
+          href={`/work/${project.slug}`}
+          class="reveal group block rounded-2xl border border-tc-line bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+          style={`transition-delay: ${(i % 2) * 120}ms;`}
+        >
+          <Image
+            src={project.image}
+            alt={project.alt}
+            class="w-full aspect-[16/9] object-cover"
+            width={700}
+            loading="lazy"
+          />
+          <div class="p-6 sm:p-7">
+            <h2 class="text-lg font-black text-tc-ink group-hover:text-tc-orange transition-colors">{project.name}</h2>
+            <dl class="mt-4 space-y-3">
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Challenge</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.challenge}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Approach</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.approach}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-bold uppercase tracking-widest text-tc-orange">Result</dt>
+                <dd class="mt-1 text-sm text-tc-gray leading-relaxed">{project.result}</dd>
+              </div>
+            </dl>
+            <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange">
+              Read the case study
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cards = document.querySelectorAll<HTMLElement>('.reveal');
+
+  if (prefersReducedMotion) {
+    cards.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    cards.forEach((el) => observer.observe(el));
+  }
+</script>
+

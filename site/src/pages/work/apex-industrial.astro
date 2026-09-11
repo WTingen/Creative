@@ -1,0 +1,31 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import apexFeature from '../../assets/images/work/apex-feature.webp';
+import apexBusinessCard from '../../assets/images/work/apex-tile-businesscard.webp';
+import apexSignage from '../../assets/images/work/apex-tile-signage.webp';
+import apexFlyer from '../../assets/images/work/apex-tile-flyer.webp';
+---
+<CaseStudyLayout
+  client="Apex Industrial"
+  summary="A group of brokers launching a new industrial real estate brokerage — given a clean, lighter brand built to stand out from day one."
+  description="How Tingen Creative built the brand identity and marketing collateral for Apex Industrial as they launched a new industrial brokerage."
+  path="/work/apex-industrial"
+  heroImage={apexFeature}
+  heroImageAlt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
+  squareImage1={apexBusinessCard}
+  squareImage1Alt="Apex Industrial business card"
+  squareImage2={apexSignage}
+  squareImage2Alt="Apex Industrial For Lease property signage"
+  rectImage={apexFlyer}
+  rectImageAlt="Apex Industrial property flyer"
+  servicesUsed={['Brand Alignment']}
+  challenge="Apex Industrial — a group of brokers building a new business to manage industrial leasing and client relationships — wanted a clean, lighter look to distinguish them from other industrial brokerages, on a tight timeline as they launched."
+  approach="We expanded their color palette, solidified font choices, and selected an imagery style, then built collateral around voluminous white space and an eye-leading hierarchy — readable at a glance, with content chunked into small components rather than dense blocks."
+  result="Apex Industrial launched with a full, robust brand identity and collateral distinct from other industrial brokerage firms — and had materials posted at new client properties before the ink was dry."
+  testimonial={{
+    quote:
+      "Working with Tingen Creative to brand a new company has been a wonderful experience! They helped us from start to finish to create a brand identity we truly love and are proud to share. We will continue to use Tingen Creative as we grow and expand our new company and could not recommend Tingen Creative more.",
+    name: 'Ryan Blackburn',
+    title: 'Managing Broker, Apex Industrial',
+  }}
+/>

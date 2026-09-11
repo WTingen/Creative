@@ -1,0 +1,61 @@
+---
+import EmailLink from './EmailLink.astro';
+import { PHONE_DISPLAY, PHONE_TEL } from '../lib/contact';
+
+const year = new Date().getFullYear();
+const links = [
+  { href: '/services', label: 'Services' },
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/brand-review', label: 'Free Brand Review' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<footer class="bg-tc-gray text-white">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+      <div>
+        <img
+          src="/images/logos/tingen-creative-logo-outline.png"
+          alt="Tingen Creative"
+          class="h-8 w-auto mb-4 brightness-0 invert"
+        />
+        <p class="text-sm text-gray-300 max-w-xs">
+          Brand strategy and identity for commercial real estate, development, and construction.
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Site</p>
+        <ul class="space-y-2">
+          {links.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-gray-200 hover:text-tc-orange transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Get in touch</p>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href={`tel:${PHONE_TEL}`} class="text-gray-200 hover:text-tc-orange transition-colors">
+              {PHONE_DISPLAY}
+            </a>
+          </li>
+          <li>
+            <EmailLink class="text-gray-200 hover:text-tc-orange transition-colors" />
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between gap-2 text-xs text-gray-400">
+      <p>&copy; {year} Tingen Creative. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,30 @@
+---
+import { EMAIL_USER, EMAIL_DOMAIN } from '../lib/contact';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<a
+  href="#"
+  class={`email-link ${className}`}
+  data-user={EMAIL_USER}
+  data-domain={EMAIL_DOMAIN}
+  aria-label="Email Tingen Creative"
+>
+  <span class="email-text">Loading email…</span>
+</a>
+<script>
+  // Assemble the mailto link client-side so the raw address never sits in
+  // page source as plain text — cuts down on basic scraper harvesting.
+  document.querySelectorAll<HTMLAnchorElement>('.email-link').forEach((el) => {
+    const user = el.dataset.user;
+    const domain = el.dataset.domain;
+    if (!user || !domain) return;
+    const address = `${user}@${domain}`;
+    el.href = `mailto:${address}`;
+    const textEl = el.querySelector('.email-text');
+    if (textEl) textEl.textContent = address;
+  });
+</script>

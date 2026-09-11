@@ -1,0 +1,209 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CareerTimeline from '../components/CareerTimeline.astro';
+import { CALENDLY_URL } from '../lib/contact';
+import heroTriptych from '../assets/images/work/hero-triptych.webp';
+import apexFeature from '../assets/images/work/apex-feature.webp';
+import seefriedFeature from '../assets/images/work/seefried-feature.webp';
+import dressgrayFeature from '../assets/images/work/dressgray-feature.webp';
+import horizonFeature from '../assets/images/work/horizon-feature.webp';
+
+const clients = [
+  { name: 'Seefried Industrial Properties', file: 'Seefried.png' },
+  { name: 'Apex Industrial', file: 'Apex.png' },
+  { name: 'Capital Development Partners', file: 'CDP.png' },
+  { name: 'SVN', file: 'SVN.png' },
+];
+
+const moreWork = [
+  { name: 'Seefried Industrial Properties', blurb: 'Sales collateral built to close', image: seefriedFeature, slug: 'seefried-industrial-properties' },
+  { name: 'dress gray', blurb: 'Discovery and brand workshop', image: dressgrayFeature, slug: 'dress-gray' },
+  { name: 'Horizon Living', blurb: 'A Manor Lakes development', image: horizonFeature, slug: 'horizon-living' },
+];
+---
+<BaseLayout
+  title="Tingen Creative"
+  description="Brand strategy and identity for commercial real estate, development, and construction companies — built on nearly 20 years inside the industry."
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div
+      class="absolute -top-24 -left-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70"
+      style="background: #F6C4AA;"
+    ></div>
+    <div
+      class="absolute -top-10 right-0 -z-10 h-64 w-64 sm:h-96 sm:w-96 rounded-full blur-3xl opacity-60"
+      style="background: #FDE9E1;"
+    ></div>
+    <div
+      class="absolute inset-0 -z-10 opacity-[0.4]"
+      style="background-image: radial-gradient(circle, #E9E5DE 1px, transparent 1px); background-size: 22px 22px;"
+    ></div>
+
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-16 sm:pb-20">
+      <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-center">
+        <div>
+          <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">
+            Brand strategy for commercial real estate
+          </p>
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-tc-ink text-balance">
+            Almost 20 years building brands inside commercial real estate.
+          </h1>
+          <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+            Warren Tingen started in brand at CBRE, spent twelve more years freelancing
+            exclusively for CRE clients, and has run Tingen Creative since 2021 — one
+            industry, the whole way through.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
+            >
+              Book a Call
+            </a>
+            <a
+              href="/brand-review"
+              class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+            >
+              Take the Free Brand Review
+            </a>
+          </div>
+        </div>
+        <Image
+          src={heroTriptych}
+          alt="Commercial real estate work: a residential property at dusk, a downtown skyline, and an upscale interior lounge"
+          class="rounded-2xl shadow-lg w-full aspect-[4/5] max-h-[520px] object-cover mx-auto"
+          width={640}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Career timeline -->
+  <section class="border-y border-tc-line bg-white">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 py-10 sm:py-14">
+      <CareerTimeline />
+    </div>
+  </section>
+
+  <!-- Client logos -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+    <p class="text-center text-xs font-bold uppercase tracking-widest text-tc-gray mb-8">
+      Trusted by teams at
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+      {clients.map((client) => (
+        <div class="flex items-center justify-center rounded-2xl bg-white border border-tc-line shadow-sm hover:shadow-md transition-shadow p-6 sm:p-10 min-h-[7rem] sm:min-h-[9rem]">
+          <img
+            src={`/images/clients/${client.file}`}
+            alt={client.name}
+            class="max-h-16 sm:max-h-20 w-auto object-contain"
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured project -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+      <Image
+        src={apexFeature}
+        alt="Apex Industrial — aerial view of an industrial property with the Apex Industrial logo"
+        class="rounded-2xl shadow-lg w-full aspect-square object-cover order-1 md:order-none"
+        width={600}
+        loading="lazy"
+      />
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">
+          Featured project
+        </p>
+        <h2 class="text-2xl sm:text-3xl font-black text-tc-ink text-balance">
+          From a two-person operation to an industrial powerhouse
+        </h2>
+        <p class="mt-4 text-base text-tc-gray leading-relaxed">
+          Apex Industrial came to Tingen Creative with a logo and colors, but
+          nothing tying it together for the company to grow. Today Apex is a
+          full-fledged industrial real estate advisory, built on brand
+          standards designed to scale with it.
+        </p>
+        <a
+          href="/work/apex-industrial"
+          class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity"
+        >
+          See the work
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-14 sm:mt-20 pt-14 sm:pt-20 border-t border-tc-line">
+      <div class="flex items-end justify-between gap-4 mb-8">
+        <h3 class="text-lg sm:text-xl font-black text-tc-ink">More recent work</h3>
+        <a href="/work" class="shrink-0 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange hover:opacity-80 transition-opacity">
+          See all work
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-5">
+        {moreWork.map((project) => (
+          <a href={`/work/${project.slug}`} class="group block">
+            <Image
+              src={project.image}
+              alt={project.name}
+              class="rounded-2xl shadow-sm group-hover:shadow-md transition-shadow w-full aspect-square object-cover"
+              width={400}
+              loading="lazy"
+            />
+            <p class="mt-3 text-sm font-black text-tc-ink">{project.name}</p>
+            <p class="text-xs text-tc-gray">{project.blurb}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div
+      class="absolute -bottom-24 -right-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70"
+      style="background: #F6C4AA;"
+    ></div>
+    <div
+      class="absolute inset-0 -z-10 opacity-[0.4]"
+      style="background-image: radial-gradient(circle, #E9E5DE 1px, transparent 1px); background-size: 22px 22px;"
+    ></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 text-center">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-tc-ink text-balance max-w-2xl mx-auto">
+        Ready to build a brand your growth can stand on?
+      </h2>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg shadow-orange-900/10 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+        <a
+          href="/brand-review"
+          class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-tc-orange border-2 border-tc-orange rounded-xl px-6 py-3.5 hover:bg-tc-orange hover:text-white transition-colors"
+        >
+          Take the Free Brand Review
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

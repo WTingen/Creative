@@ -1,0 +1,123 @@
+---
+import { CALENDLY_URL } from '../lib/contact';
+
+const navLinks = [
+  { href: '/services', label: 'Services' },
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+];
+const currentPath = Astro.url.pathname;
+---
+<header class="sticky top-0 z-50 bg-tc-paper/90 backdrop-blur border-b border-tc-line">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      <a href="/" class="shrink-0" aria-label="Tingen Creative home">
+        <img
+          src="/images/logos/tingen-creative-logo-color.png"
+          alt="Tingen Creative"
+          class="h-8 sm:h-9 w-auto"
+        />
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`text-sm font-semibold tracking-wide transition-colors ${
+              currentPath.startsWith(link.href)
+                ? 'text-tc-orange'
+                : 'text-tc-gray hover:text-tc-orange'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a
+          href="/brand-review"
+          class="text-sm font-semibold text-tc-orange border border-tc-orange rounded px-4 py-2 hover:bg-tc-orange hover:text-white transition-colors"
+        >
+          Free Brand Review
+        </a>
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm font-semibold text-white bg-tc-orange rounded px-4 py-2 hover:opacity-90 transition-opacity"
+        >
+          Book a Call
+        </a>
+      </div>
+
+      <!-- Mobile menu toggle -->
+      <button
+        id="menu-toggle"
+        type="button"
+        class="md:hidden inline-flex items-center justify-center h-10 w-10 -mr-2 text-tc-gray"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Toggle menu"
+      >
+        <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu panel -->
+  <nav
+    id="mobile-menu"
+    class="md:hidden hidden border-t border-tc-line bg-tc-paper"
+    aria-label="Mobile"
+  >
+    <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class={`text-base font-semibold py-3 border-b border-tc-line ${
+            currentPath.startsWith(link.href) ? 'text-tc-orange' : 'text-tc-gray'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="/brand-review"
+        class="mt-4 text-center text-sm font-semibold text-tc-orange border border-tc-orange rounded px-4 py-3"
+      >
+        Free Brand Review
+      </a>
+      <a
+        href={CALENDLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-2 text-center text-sm font-semibold text-white bg-tc-orange rounded px-4 py-3"
+      >
+        Book a Call
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>
