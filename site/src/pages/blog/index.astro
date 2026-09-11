@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import postsData from '../../data/posts.json';
+
+interface Post {
+  title: string;
+  slug: string;
+  date: string;
+  dateDisplay: string;
+  excerpt: string;
+  readingTime: number;
+}
+
+const posts = postsData as Post[];
+---
+<BaseLayout
+  title="Blog"
+  description="Brand strategy, marketing, and AI insight for commercial real estate, development, and construction — from Tingen Creative."
+  path="/blog"
+>
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-20 pb-12 sm:pb-16">
+    <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">Blog</p>
+    <h1 class="text-4xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance max-w-2xl">
+      Brand and marketing insight for commercial real estate.
+    </h1>
+    <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+      Where AI, marketing, and commercial real estate actually meet — not the
+      hype, just what's useful.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-16 sm:pb-24">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <a
+          href={`/blog/${post.slug}`}
+          class="group flex flex-col rounded-2xl border border-tc-line bg-white shadow-sm hover:shadow-md transition-shadow p-6 sm:p-7"
+        >
+          <p class="text-xs font-bold uppercase tracking-wide text-tc-gray">
+            {post.dateDisplay} · {post.readingTime} min read
+          </p>
+          <h2 class="mt-3 text-lg font-black text-tc-ink group-hover:text-tc-orange transition-colors text-balance">
+            {post.title}
+          </h2>
+          <p class="mt-3 text-sm text-tc-gray leading-relaxed flex-1">{post.excerpt}</p>
+          <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-tc-orange">
+            Read the post
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

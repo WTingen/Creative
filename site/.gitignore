@@ -3,3 +3,5 @@ dist/
 .astro/
 .env
 *.log
+data/*.db
+data/*.db-*

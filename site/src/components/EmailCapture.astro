@@ -1,0 +1,92 @@
+---
+interface Props {
+  source: string;
+  detail?: string;
+  heading?: string;
+  body?: string;
+}
+
+const {
+  source,
+  detail,
+  heading = 'Get more like this',
+  body = "Occasional insight on branding for commercial real estate — no noise, unsubscribe anytime.",
+} = Astro.props;
+
+const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
+---
+<div class="rounded-2xl border border-tc-line bg-white p-6 sm:p-8">
+  <h3 class="text-lg font-black text-tc-ink">{heading}</h3>
+  <p class="mt-2 text-sm text-tc-gray leading-relaxed">{body}</p>
+
+  <form
+    id={formId}
+    class="email-capture-form mt-5 flex flex-col sm:flex-row gap-3"
+    data-source={source}
+    data-detail={detail ?? ''}
+  >
+    <label for={`${formId}-email`} class="sr-only">Email address</label>
+    <input
+      id={`${formId}-email`}
+      type="email"
+      name="email"
+      required
+      placeholder="you@company.com"
+      class="flex-1 rounded-xl border border-tc-line px-4 py-3 text-sm text-tc-ink placeholder:text-tc-gray focus:outline-none focus:ring-2 focus:ring-tc-orange"
+    />
+    <button
+      type="submit"
+      class="shrink-0 inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3 hover:opacity-90 transition-opacity disabled:opacity-60"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p class="email-capture-message mt-3 text-sm" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>('.email-capture-form');
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const messageEl = form.parentElement?.querySelector<HTMLParagraphElement>('.email-capture-message');
+      const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
+      if (!button || !messageEl || !emailInput) return;
+
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Subscribing…';
+      messageEl.textContent = '';
+      messageEl.className = 'email-capture-message mt-3 text-sm';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value,
+            source: form.dataset.source,
+            detail: form.dataset.detail || undefined,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          messageEl.textContent = "You're subscribed — thanks!";
+          messageEl.classList.add('text-tc-orange', 'font-semibold');
+          form.reset();
+        } else {
+          messageEl.textContent = data.error || 'Something went wrong. Try again.';
+          messageEl.classList.add('text-red-600');
+        }
+      } catch {
+        messageEl.textContent = 'Something went wrong. Try again.';
+        messageEl.classList.add('text-red-600');
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  });
+</script>
