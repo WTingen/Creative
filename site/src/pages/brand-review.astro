@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import { CALENDLY_URL } from '../lib/contact';
+
+// Condensed from the original 22-question version (5 categories x ~4
+// questions each) down to 2 questions per category — one merged question per
+// pair of subsections, keeping every theme but cutting completion time.
+const categories = [
+  {
+    id: 'identity',
+    name: 'Brand Identity',
+    subsections: [
+      {
+        name: 'Logo & Visual Identity',
+        questions: [
+          {
+            text: 'How well do your logo, color palette, and visual identity reflect your real estate niche and stay consistent across every touchpoint — brochures, social, website?',
+            low: 'Not at all',
+            high: 'Completely',
+          },
+        ],
+      },
+      {
+        name: 'Brand Messaging',
+        questions: [
+          {
+            text: 'How consistently and engagingly does your messaging communicate your unique value proposition across platforms?',
+            low: 'Very inconsistent',
+            high: 'Highly consistent',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'culture',
+    name: 'Internal Brand Culture',
+    subsections: [
+      {
+        name: 'Organizational Culture',
+        questions: [
+          {
+            text: 'How well do your internal culture and communicated mission and vision embody your brand values?',
+            low: 'Not at all',
+            high: 'Completely',
+          },
+        ],
+      },
+      {
+        name: 'Employee Engagement',
+        questions: [
+          {
+            text: 'How well do your employees understand, represent, and get involved in your brand as ambassadors?',
+            low: 'Poor understanding',
+            high: 'Excellent understanding',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'experience',
+    name: 'Customer Experience & Perception',
+    subsections: [
+      {
+        name: 'Client Feedback',
+        questions: [
+          {
+            text: 'How satisfied are clients with your brand and the experience you currently offer?',
+            low: 'Very dissatisfied',
+            high: 'Highly satisfied',
+          },
+        ],
+      },
+      {
+        name: 'Market Positioning',
+        questions: [
+          {
+            text: 'Are you being selected over your competitors, and how does your experience compare to theirs?',
+            low: 'Rarely chosen',
+            high: 'Frequently chosen',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'performance',
+    name: 'Brand Performance',
+    subsections: [
+      {
+        name: 'Business Growth',
+        questions: [
+          {
+            text: 'How much does your brand contribute to business growth — market share, client retention, referrals, new opportunities?',
+            low: 'Minimal contribution',
+            high: 'Significant contribution',
+          },
+        ],
+      },
+      {
+        name: 'Brand Awareness & Measurement',
+        questions: [
+          {
+            text: 'How recognizable is your brand among your desired clientele, and how well do you measure its impact in the market?',
+            low: 'Not recognizable',
+            high: 'Highly recognizable',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'digital',
+    name: 'Digital Presence & Marketing',
+    subsections: [
+      {
+        name: 'Online Presence',
+        questions: [
+          {
+            text: 'How effective is your website and social media at engaging your audience and conveying your brand story?',
+            low: 'Not effective',
+            high: 'Highly effective',
+          },
+        ],
+      },
+      {
+        name: 'Marketing Materials & Strategy',
+        questions: [
+          {
+            text: 'Do your marketing materials and digital marketing align with your brand and reach your target audience?',
+            low: 'Not aligned',
+            high: 'Perfectly aligned',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+// Flatten for scoring — each question gets a stable index used as its radio
+// group name, plus which category it belongs to for the subtotal breakdown.
+const flatQuestions = categories.flatMap((cat) =>
+  cat.subsections.flatMap((sub) =>
+    sub.questions.map((q) => ({ ...q, categoryId: cat.id, subsectionName: sub.name }))
+  )
+);
+const questionCount = flatQuestions.length;
+
+const categoryMeta = categories.map((cat) => ({
+  id: cat.id,
+  name: cat.name,
+  max: cat.subsections.reduce((n, s) => n + s.questions.length, 0) * 5,
+}));
+
+const minScore = questionCount * 1;
+const maxScore = questionCount * 5;
+
+// Same five bands and voice as the original Real Brand Review PDF, scaled to
+// this question count (10 questions, 10-50) and routed to the three
+// services actually live on the site instead of generic outreach copy.
+const tiers = [
+  {
+    id: 'critical',
+    min: 10,
+    max: 17,
+    label: 'Critical',
+    summary:
+      'Your brand requires immediate attention to address fundamental challenges and redefine its direction.',
+    cta: 'foundations',
+  },
+  {
+    id: 'needs-improvement',
+    min: 18,
+    max: 25,
+    label: 'Needs Improvement',
+    summary:
+      'There are significant opportunities for improvement in your brand strategy and execution.',
+    cta: 'foundations',
+  },
+  {
+    id: 'moderate',
+    min: 26,
+    max: 33,
+    label: 'Moderate',
+    summary:
+      "Your brand has a good foundation. Several areas need attention to elevate your brand's impact.",
+    cta: 'alignment',
+  },
+  {
+    id: 'effective',
+    min: 34,
+    max: 41,
+    label: 'Effective',
+    summary:
+      'Your brand is doing well. There are areas that could benefit from refining and enhancement.',
+    cta: 'marketing',
+  },
+  {
+    id: 'highly-effective',
+    min: 42,
+    max: 50,
+    label: 'Highly Effective',
+    summary:
+      "Your brand is in excellent shape! However, there's always room for improvement and staying ahead of the competition.",
+    cta: 'marketing',
+  },
+];
+
+const ctaByBucket = {
+  foundations: { label: 'See Built Brand Foundations', href: '/services#foundations' },
+  alignment: { label: 'See Brand Alignment', href: '/services#alignment' },
+  marketing: { label: 'See Monthly Marketing', href: '/services#marketing' },
+};
+---
+<BaseLayout
+  title="Free Brand Review"
+  description="A free brand audit for commercial real estate — score your brand identity, culture, customer experience, performance, and digital presence, then see exactly where to start."
+  path="/brand-review"
+>
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div class="absolute -top-24 -left-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70" style="background:#F6C4AA;"></div>
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 pt-14 sm:pt-24 pb-10 sm:pb-14 text-center">
+      <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">Free Brand Review</p>
+      <h1 class="text-4xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance">
+        Where does your brand actually stand?
+      </h1>
+      <p class="mt-6 text-base sm:text-lg text-tc-gray leading-relaxed max-w-xl mx-auto">
+        A real audit, built for commercial real estate — {questionCount} questions
+        across five categories: brand identity, internal culture, customer
+        experience, performance, and digital presence. Rate each from 1 to 5
+        and get a full breakdown of where things stand.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-2xl px-4 sm:px-6 pb-20 sm:pb-28">
+    <form id="brand-review-form" class="rounded-2xl border border-tc-line bg-white p-6 sm:p-8">
+      {(() => {
+        let flatIndex = -1;
+        return categories.map((cat) => (
+          <div class="mb-10 last:mb-0">
+            <h2 class="text-xs font-black uppercase tracking-widest text-tc-orange mb-6 pb-3 border-b border-tc-line">
+              {cat.name}
+            </h2>
+            {cat.subsections.map((sub) => (
+              <div class="mb-8 last:mb-0">
+                <p class="text-xs font-bold uppercase tracking-wide text-tc-gray mb-4">{sub.name}</p>
+                {sub.questions.map((q) => {
+                  flatIndex += 1;
+                  return (
+                    <fieldset class="mb-6 last:mb-0">
+                    <legend class="text-sm font-semibold text-tc-ink leading-relaxed text-balance mb-3">
+                      {q.text}
+                    </legend>
+                    <div class="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <label class="cursor-pointer">
+                          <input type="radio" name={`q${flatIndex}`} value={n} class="peer sr-only" required />
+                          <span class="flex items-center justify-center h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-tc-line text-sm font-bold text-tc-gray transition-colors peer-checked:border-tc-orange peer-checked:bg-tc-orange peer-checked:text-white hover:border-tc-ink/30">
+                            {n}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <div class="flex justify-between text-xs text-tc-gray mt-1.5 max-w-[14rem]">
+                      <span>{q.low}</span>
+                      <span>{q.high}</span>
+                    </div>
+                  </fieldset>
+                );
+              })}
+            </div>
+            ))}
+          </div>
+        ));
+      })()}
+
+      <div class="pt-2 sticky bottom-4">
+        <div class="rounded-xl bg-white border border-tc-line shadow-lg p-4 sm:p-5">
+          <p id="brand-review-progress" class="text-xs font-bold uppercase tracking-wide text-tc-gray mb-3">
+            0 of {questionCount} answered
+          </p>
+          <button
+            type="submit"
+            disabled
+            class="w-full inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            See My Results
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div id="brand-review-results" hidden class="rounded-2xl border border-tc-line bg-white p-6 sm:p-8 text-center">
+      <p class="text-xs font-black uppercase tracking-widest text-tc-orange mb-3">Your result</p>
+      <p id="brand-review-score" class="text-sm font-bold text-tc-gray mb-1"></p>
+      <h2 id="brand-review-tier" class="text-2xl sm:text-3xl font-black text-tc-ink text-balance"></h2>
+      <p id="brand-review-summary" class="mt-4 text-base text-tc-gray leading-relaxed max-w-md mx-auto"></p>
+
+      <div id="brand-review-breakdown" class="mt-8 space-y-4 text-left max-w-md mx-auto">
+        {categoryMeta.map((cat) => (
+          <div>
+            <div class="flex justify-between text-xs font-bold text-tc-gray mb-1.5">
+              <span>{cat.name}</span>
+              <span id={`cat-score-${cat.id}`}>0 / {cat.max}</span>
+            </div>
+            <div class="h-2 rounded-full bg-tc-line overflow-hidden">
+              <div id={`cat-bar-${cat.id}`} class="h-full bg-tc-orange rounded-full transition-[width] duration-500" style="width:0%"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+        <a
+          id="brand-review-cta"
+          href="/services"
+          class="inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3 hover:opacity-90 transition-opacity"
+        ></a>
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex justify-center items-center text-sm font-bold text-tc-ink border-2 border-tc-line rounded-xl px-6 py-3 hover:border-tc-ink/40 transition-colors"
+        >
+          Book a Call Instead
+        </a>
+      </div>
+
+      <div class="mt-8 text-left">
+        {Object.keys(ctaByBucket).map((bucket) => (
+          <div id={`brand-review-capture-${bucket}`} hidden>
+            <EmailCapture
+              source="brand-review"
+              detail={bucket}
+              heading="Want this in your inbox?"
+              body="We'll send your full breakdown plus the occasional brand insight for commercial real estate — no noise, unsubscribe anytime."
+            />
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        id="brand-review-retake"
+        class="mt-6 text-sm font-bold text-tc-gray hover:text-tc-ink transition-colors"
+      >
+        Retake the review
+      </button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script
+  define:vars={{
+    tiers,
+    questionCount,
+    flatCategoryIds: flatQuestions.map((q) => q.categoryId),
+    categoryMeta,
+    ctaByBucket,
+  }}
+>
+  const form = document.getElementById('brand-review-form');
+  const progress = document.getElementById('brand-review-progress');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const resultsEl = document.getElementById('brand-review-results');
+  const scoreEl = document.getElementById('brand-review-score');
+  const tierEl = document.getElementById('brand-review-tier');
+  const summaryEl = document.getElementById('brand-review-summary');
+  const ctaEl = document.getElementById('brand-review-cta');
+  const retakeBtn = document.getElementById('brand-review-retake');
+
+  function answeredCount() {
+    const groups = new Set();
+    form.querySelectorAll('input[type="radio"]:checked').forEach((el) => groups.add(el.name));
+    return groups.size;
+  }
+
+  function updateProgress() {
+    const count = answeredCount();
+    progress.textContent = `${count} of ${questionCount} answered`;
+    submitBtn.disabled = count < questionCount;
+  }
+
+  form.addEventListener('change', updateProgress);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    let score = 0;
+    const categoryScores = {};
+    categoryMeta.forEach((c) => (categoryScores[c.id] = 0));
+
+    for (let i = 0; i < questionCount; i++) {
+      const value = Number(data.get(`q${i}`)) || 0;
+      score += value;
+      categoryScores[flatCategoryIds[i]] += value;
+    }
+
+    const tier = tiers.find((t) => score >= t.min && score <= t.max) || tiers[0];
+    const cta = ctaByBucket[tier.cta];
+
+    scoreEl.textContent = `${score} / ${questionCount * 5}`;
+    tierEl.textContent = tier.label;
+    summaryEl.textContent = tier.summary;
+    ctaEl.textContent = cta.label;
+    ctaEl.href = cta.href;
+
+    categoryMeta.forEach((cat) => {
+      const scoreNode = document.getElementById(`cat-score-${cat.id}`);
+      const barNode = document.getElementById(`cat-bar-${cat.id}`);
+      const catScore = categoryScores[cat.id];
+      if (scoreNode) scoreNode.textContent = `${catScore} / ${cat.max}`;
+      if (barNode) barNode.style.width = `${(catScore / cat.max) * 100}%`;
+    });
+
+    Object.keys(ctaByBucket).forEach((bucket) => {
+      const el = document.getElementById(`brand-review-capture-${bucket}`);
+      if (el) el.hidden = bucket !== tier.cta;
+    });
+
+    // Attach the full results to the visible capture form's dataset so
+    // EmailCapture can send them along — the confirmation email includes
+    // the actual breakdown, not just a generic "you're subscribed" note.
+    const resultsPayload = {
+      score,
+      maxScore: questionCount * 5,
+      tierLabel: tier.label,
+      tierSummary: tier.summary,
+      categories: categoryMeta.map((cat) => ({
+        name: cat.name,
+        score: categoryScores[cat.id],
+        max: cat.max,
+      })),
+    };
+    const captureForm = document.querySelector(`#brand-review-capture-${tier.cta} .email-capture-form`);
+    if (captureForm) captureForm.dataset.extra = JSON.stringify(resultsPayload);
+
+    form.hidden = true;
+    resultsEl.hidden = false;
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  retakeBtn.addEventListener('click', () => {
+    form.reset();
+    updateProgress();
+    resultsEl.hidden = true;
+    form.hidden = false;
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>

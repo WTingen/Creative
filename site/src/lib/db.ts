@@ -1,14 +1,16 @@
 import Database from 'better-sqlite3';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 
 // A single SQLite file holding every lead capture on the site (blog signups,
-// the Brand Review tool once it's built, the contact form). Lives outside
-// src/ and dist/ so it survives rebuilds and redeploys.
-const dbPath = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../data/leads.db'
-);
+// the Brand Review tool, the contact form). Resolved from process.cwd()
+// rather than import.meta.url — the latter points at wherever the bundler
+// placed this module in dist/server/chunks/, which shifts with every build
+// and breaks the relative path. cwd is the site/ directory both in `astro
+// dev` and in the production `node ./dist/server/entry.mjs` start script.
+const dataDir = path.join(process.cwd(), 'data');
+fs.mkdirSync(dataDir, { recursive: true });
+const dbPath = path.join(dataDir, 'leads.db');
 
 export const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
@@ -36,4 +38,27 @@ export function insertLead({ email, source, detail }: NewLead) {
     'INSERT INTO leads (email, source, detail) VALUES (?, ?, ?)'
   );
   return stmt.run(email, source, detail ?? null);
+}
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`);
+
+interface NewMessage {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export function insertMessage({ name, email, message }: NewMessage) {
+  const stmt = db.prepare(
+    'INSERT INTO messages (name, email, message) VALUES (?, ?, ?)'
+  );
+  return stmt.run(name, email, message);
 }

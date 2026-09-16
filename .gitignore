@@ -1,0 +1,6 @@
+.env
+.env.*
+deploy/.env
+deploy/keys/
+*.pem
+*.key

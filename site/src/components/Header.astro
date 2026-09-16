@@ -25,7 +25,7 @@ const currentPath = Astro.url.pathname;
         {navLinks.map((link) => (
           <a
             href={link.href}
-            class={`text-sm font-semibold tracking-wide transition-colors ${
+            class={`text-sm font-semibold uppercase tracking-wide transition-colors ${
               currentPath.startsWith(link.href)
                 ? 'text-tc-orange'
                 : 'text-tc-gray hover:text-tc-orange'
@@ -39,7 +39,7 @@ const currentPath = Astro.url.pathname;
       <div class="hidden md:flex items-center gap-3">
         <a
           href="/brand-review"
-          class="text-sm font-semibold text-tc-orange border border-tc-orange rounded px-4 py-2 hover:bg-tc-orange hover:text-white transition-colors"
+          class="text-sm font-semibold uppercase tracking-wide text-tc-orange border border-tc-orange rounded px-4 py-2 hover:bg-tc-orange hover:text-white transition-colors"
         >
           Free Brand Review
         </a>
@@ -47,7 +47,7 @@ const currentPath = Astro.url.pathname;
           href={CALENDLY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-sm font-semibold text-white bg-tc-orange rounded px-4 py-2 hover:opacity-90 transition-opacity"
+          class="text-sm font-semibold uppercase tracking-wide text-white bg-tc-orange rounded px-4 py-2 hover:opacity-90 transition-opacity"
         >
           Book a Call
         </a>
@@ -82,7 +82,7 @@ const currentPath = Astro.url.pathname;
       {navLinks.map((link) => (
         <a
           href={link.href}
-          class={`text-base font-semibold py-3 border-b border-tc-line ${
+          class={`text-base font-semibold uppercase tracking-wide py-3 border-b border-tc-line ${
             currentPath.startsWith(link.href) ? 'text-tc-orange' : 'text-tc-gray'
           }`}
         >
@@ -91,7 +91,7 @@ const currentPath = Astro.url.pathname;
       ))}
       <a
         href="/brand-review"
-        class="mt-4 text-center text-sm font-semibold text-tc-orange border border-tc-orange rounded px-4 py-3"
+        class="mt-4 text-center text-sm font-semibold uppercase tracking-wide text-tc-orange border border-tc-orange rounded px-4 py-3"
       >
         Free Brand Review
       </a>
@@ -99,7 +99,7 @@ const currentPath = Astro.url.pathname;
         href={CALENDLY_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-2 text-center text-sm font-semibold text-white bg-tc-orange rounded px-4 py-3"
+        class="mt-2 text-center text-sm font-semibold uppercase tracking-wide text-white bg-tc-orange rounded px-4 py-3"
       >
         Book a Call
       </a>

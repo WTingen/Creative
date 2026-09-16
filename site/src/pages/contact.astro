@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailLink from '../components/EmailLink.astro';
+import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
+---
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Tingen Creative — book a call, send a message, or reach out directly."
+  path="/contact"
+>
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 -z-20 bg-tc-paper"></div>
+    <div class="absolute -top-24 -right-20 -z-10 h-80 w-80 sm:h-[28rem] sm:w-[28rem] rounded-full blur-3xl opacity-70" style="background:#F6C4AA;"></div>
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-14 sm:pt-24 pb-10 sm:pb-14">
+      <p class="text-xs sm:text-sm font-black uppercase tracking-widest text-tc-orange mb-5">Contact</p>
+      <h1 class="text-4xl sm:text-5xl font-black leading-[1.05] text-tc-ink text-balance max-w-2xl">
+        Let's talk about your brand.
+      </h1>
+      <p class="mt-6 text-base sm:text-lg text-tc-gray max-w-xl leading-relaxed">
+        The fastest way in is a call — but if you'd rather write it out, send
+        a message and I'll get back to you directly.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pb-20 sm:pb-28">
+    <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-12">
+      <div class="space-y-4">
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block rounded-2xl border border-tc-line bg-white p-6 hover:shadow-md transition-shadow"
+        >
+          <p class="text-xs font-bold uppercase tracking-wide text-tc-gray">Book a call</p>
+          <p class="mt-2 text-lg font-black text-tc-ink">Fit Call, 20 minutes →</p>
+          <p class="mt-2 text-sm text-tc-gray leading-relaxed">
+            The quickest way to figure out if this is a fit — no pitch, just a conversation.
+          </p>
+        </a>
+
+        <div class="rounded-2xl border border-tc-line bg-white p-6">
+          <p class="text-xs font-bold uppercase tracking-wide text-tc-gray">Call or text</p>
+          <a href={`tel:${PHONE_TEL}`} class="mt-2 block text-lg font-black text-tc-ink hover:text-tc-orange transition-colors">
+            {PHONE_DISPLAY}
+          </a>
+        </div>
+
+        <div class="rounded-2xl border border-tc-line bg-white p-6">
+          <p class="text-xs font-bold uppercase tracking-wide text-tc-gray">Email</p>
+          <EmailLink class="mt-2 block text-lg font-black text-tc-ink hover:text-tc-orange transition-colors" />
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-tc-line bg-white p-6 sm:p-8">
+        <h2 class="text-lg font-black text-tc-ink">Send a message</h2>
+        <p class="mt-2 text-sm text-tc-gray leading-relaxed">
+          Tell me a bit about the project and I'll reply personally.
+        </p>
+
+        <form id="contact-form" class="mt-6 space-y-4">
+          <div>
+            <label for="contact-name" class="block text-xs font-bold uppercase tracking-wide text-tc-gray mb-1.5">
+              Name
+            </label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              required
+              class="w-full rounded-xl border border-tc-line px-4 py-3 text-sm text-tc-ink placeholder:text-tc-gray focus:outline-none focus:ring-2 focus:ring-tc-orange"
+              placeholder="Your name"
+            />
+          </div>
+          <div>
+            <label for="contact-email" class="block text-xs font-bold uppercase tracking-wide text-tc-gray mb-1.5">
+              Email
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              required
+              class="w-full rounded-xl border border-tc-line px-4 py-3 text-sm text-tc-ink placeholder:text-tc-gray focus:outline-none focus:ring-2 focus:ring-tc-orange"
+              placeholder="you@company.com"
+            />
+          </div>
+          <div>
+            <label for="contact-message" class="block text-xs font-bold uppercase tracking-wide text-tc-gray mb-1.5">
+              Message
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              rows="5"
+              class="w-full rounded-xl border border-tc-line px-4 py-3 text-sm text-tc-ink placeholder:text-tc-gray focus:outline-none focus:ring-2 focus:ring-tc-orange resize-none"
+              placeholder="What are you working on?"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="w-full inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity disabled:opacity-60"
+          >
+            Send Message
+          </button>
+          <p id="contact-message-status" class="text-sm" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const statusEl = document.getElementById('contact-message-status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const nameInput = form.querySelector<HTMLInputElement>('input[name="name"]');
+    const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
+    const messageInput = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
+    if (!button || !statusEl || !nameInput || !emailInput || !messageInput) return;
+
+    const originalLabel = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    statusEl.textContent = '';
+    statusEl.className = 'text-sm';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameInput.value,
+          email: emailInput.value,
+          message: messageInput.value,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        statusEl.textContent = "Message sent — I'll get back to you soon.";
+        statusEl.classList.add('text-tc-orange', 'font-semibold');
+        form.reset();
+      } else {
+        statusEl.textContent = data.error || 'Something went wrong. Try again.';
+        statusEl.classList.add('text-red-600');
+      }
+    } catch {
+      statusEl.textContent = 'Something went wrong. Try again.';
+      statusEl.classList.add('text-red-600');
+    } finally {
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
+  });
+</script>

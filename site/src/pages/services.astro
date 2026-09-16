@@ -65,29 +65,32 @@ const serviceSchema = {
 
 const foundationsPhases = [
   {
+    phaseLabel: 'Phase I',
     number: '01',
     name: 'Brand Master Plan',
     timeline: '2–4 weeks',
     price: '$15,000',
     blurb:
-      "We listen first — understanding your goals and the audience you're trying to reach. Research and positioning determine how your brand will be perceived, and how it stands apart from the competition.",
+      "We start with naming and logo — a handful of directions refined down to one — backed by real strategic work: target audience research, competitive research, and positioning. For projects that need it, we'll also build a concept deck for investors, city boards, or permitting.",
   },
   {
+    phaseLabel: 'Phase II',
     number: '02',
     name: 'Brand Build',
     timeline: '2–3 weeks',
     price: '$30,000',
     priceNote: '*',
     blurb:
-      'Naming, voice, and visual identity — the elements that make a brand recognizable and memorable, built to work across everything from a business card to a leasing brochure.',
+      'Copywriting, signage, and a full set of collateral templates — flyers, brochures, stationery, email, social — plus a website buildout. If photography or video are part of the mix, we scope those together.',
   },
   {
+    phaseLabel: 'Phase III',
     number: '03',
     name: 'Brand Capstone',
     timeline: '4 weeks',
     price: '$15,000',
     blurb:
-      "A style guide to keep the brand consistent going forward, plus the first wave of collateral built from it — so the new brand is already at work by the time we're done.",
+      'A complete style guide, visual and vocal — logo variations, color, type, and tone of voice — plus up to 15 hours of launch guidance straight from our chief creative.',
   },
 ];
 
@@ -178,16 +181,17 @@ const marketingTiers = [
         </p>
       </div>
 
-      <div class="mt-10 grid md:grid-cols-3 gap-5">
+      <div class="mt-10 grid md:grid-cols-3 gap-5 items-stretch">
         {foundationsPhases.map((phase, i) => (
           <div class="relative rounded-2xl border border-tc-line bg-white shadow-sm p-6 sm:p-7 flex flex-col">
-            <p class="text-xs font-mono font-bold text-tc-orange tracking-widest">{phase.number}</p>
-            <h3 class="mt-3 text-lg font-black text-tc-ink">{phase.name}</h3>
+            <p class="text-xs font-bold uppercase tracking-widest text-tc-orange">{phase.phaseLabel}</p>
+            <h3 class="mt-2 text-lg font-black text-tc-ink">{phase.name}</h3>
             <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-tc-gray">{phase.timeline}</p>
             <p class="mt-4 text-sm text-tc-gray leading-relaxed flex-1">{phase.blurb}</p>
             <p class="mt-5 text-2xl font-black text-tc-ink">
               {phase.price}<span class="text-base font-bold text-tc-gray">{phase.priceNote}</span>
             </p>
+
             {i < foundationsPhases.length - 1 && (
               <div class="hidden md:flex absolute top-7 -right-3 z-10 h-6 w-6 items-center justify-center rounded-full bg-tc-orange text-white">
                 <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -198,7 +202,7 @@ const marketingTiers = [
           </div>
         ))}
       </div>
-      <p class="mt-4 text-xs text-tc-gray">*Brand Build scope varies by number of applications needed — final price confirmed after Phase I.</p>
+      <p class="mt-4 text-xs text-tc-gray">*Base price subject to change based on client need for enhanced video, photography, and web assets. Up to 2 revisions on all of the above.</p>
 
       <div class="mt-8">
         <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" class="inline-flex justify-center items-center text-sm sm:text-base font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 shadow-lg hover:opacity-90 transition-opacity">
@@ -244,7 +248,7 @@ const marketingTiers = [
   </section>
 
   <!-- Monthly Marketing -->
-  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20">
+  <section id="marketing" class="mx-auto max-w-6xl px-4 sm:px-6 py-14 sm:py-20 scroll-mt-20">
     <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-tc-orange mb-3">Monthly Marketing</p>

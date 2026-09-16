@@ -62,6 +62,15 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
       messageEl.className = 'email-capture-message mt-3 text-sm';
 
       try {
+        let extra: unknown;
+        if (form.dataset.extra) {
+          try {
+            extra = JSON.parse(form.dataset.extra);
+          } catch {
+            extra = undefined;
+          }
+        }
+
         const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -69,6 +78,7 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
             email: emailInput.value,
             source: form.dataset.source,
             detail: form.dataset.detail || undefined,
+            extra,
           }),
         });
         const data = await res.json();
