@@ -124,6 +124,32 @@ All of the following are gitignored and must never be committed:
 | Google service account (Sheets) | `site/.env` + backup JSON in `deploy/keys/` |
 | Stripe checkout links (Monthly Marketing) | hardcoded in `site/src/pages/services.astro` — these are public checkout URLs, not secrets |
 
+## Form spam protection (added 2026-10-01)
+
+Late Sept 2026 a bot (mostly via Tor) posted ~1/hour to `/api/contact`
+with random-letter messages and *other people's* email addresses — classic
+"subscription bombing", using our auto-reply to flood victims' inboxes.
+Fixes:
+
+- Contact form no longer auto-replies to the submitter at all.
+- Both API routes run `checkSubmission()` (`site/src/lib/spamGuard.ts`)
+  before saving/sending anything: honeypot field, 3s minimum fill time,
+  and Cloudflare Turnstile. Bot-looking submissions get a fake
+  `{success: true}` and are logged as `Blocked ...` in
+  `journalctl -u tingencreative`.
+- Turnstile keys configured 2026-10-01 (widget is in Cloudflare
+  dashboard -> Turnstile, hostname tingencreative.com). It's enforced only when
+  `TURNSTILE_SECRET_KEY` (server) and
+  `PUBLIC_TURNSTILE_SITE_KEY` (baked in at build) are set in `.env` — set
+  both, rebuild, and re-sync the server `.env`.
+- Brand Review tier/summary are recomputed server-side from category
+  scores (`site/src/lib/brandReview.ts`), never trusted from the client.
+- Sheets appends use `valueInputOption=RAW` (no formula injection).
+- nginx rate-limits `/api/` to 5 req/min per IP (burst 5):
+  `/etc/nginx/conf.d/tingencreative-ratelimit.conf` + a `location /api/`
+  block in the site config. Pre-change backup at
+  `/root/tingencreative.nginx.bak-20261001`.
+
 ## Open items
 
 None outstanding as of this writing. Past open items (Closte account

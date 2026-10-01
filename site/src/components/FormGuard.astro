@@ -1,0 +1,31 @@
+---
+// Drop inside any <form> that posts to /api/contact or /api/subscribe.
+// Renders a honeypot field humans never see, plus the Cloudflare Turnstile
+// widget when PUBLIC_TURNSTILE_SITE_KEY is set at build time. Pair with
+// guardFields()/resetGuard() from src/lib/formGuardClient.ts.
+import { HONEYPOT_FIELD } from '../lib/spamGuard';
+
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+<div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+  <label>
+    Leave this empty
+    <input type="text" name={HONEYPOT_FIELD} tabindex="-1" autocomplete="off" />
+  </label>
+</div>
+{siteKey && (
+  <div class="cf-turnstile basis-full" data-sitekey={siteKey} data-appearance="interaction-only" data-theme="light"></div>
+)}
+
+<script>
+  // Load Turnstile once per page no matter how many forms include this
+  // component (the Brand Review page renders three).
+  if (document.querySelector('.cf-turnstile') && !document.getElementById('cf-turnstile-api')) {
+    const s = document.createElement('script');
+    s.id = 'cf-turnstile-api';
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+</script>

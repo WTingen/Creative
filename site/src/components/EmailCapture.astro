@@ -1,4 +1,6 @@
 ---
+import FormGuard from './FormGuard.astro';
+
 interface Props {
   source: string;
   detail?: string;
@@ -21,7 +23,7 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
 
   <form
     id={formId}
-    class="email-capture-form mt-5 flex flex-col sm:flex-row gap-3"
+    class="email-capture-form mt-5 flex flex-col sm:flex-row sm:flex-wrap gap-3"
     data-source={source}
     data-detail={detail ?? ''}
   >
@@ -40,11 +42,14 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
     >
       Subscribe
     </button>
+    <FormGuard />
   </form>
   <p class="email-capture-message mt-3 text-sm" role="status" aria-live="polite"></p>
 </div>
 
 <script>
+  import { guardFields, resetGuard } from '../lib/formGuardClient';
+
   const forms = document.querySelectorAll<HTMLFormElement>('.email-capture-form');
 
   forms.forEach((form) => {
@@ -79,6 +84,7 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
             source: form.dataset.source,
             detail: form.dataset.detail || undefined,
             extra,
+            ...guardFields(form),
           }),
         });
         const data = await res.json();
@@ -94,6 +100,7 @@ const formId = `email-capture-${source}${detail ? `-${detail}` : ''}`;
         messageEl.textContent = 'Something went wrong. Try again.';
         messageEl.classList.add('text-red-600');
       } finally {
+        resetGuard(form);
         button.disabled = false;
         button.textContent = originalLabel;
       }

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailLink from '../components/EmailLink.astro';
+import FormGuard from '../components/FormGuard.astro';
 import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
 ---
 <BaseLayout
@@ -98,6 +99,7 @@ import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
               placeholder="What are you working on?"
             ></textarea>
           </div>
+          <FormGuard />
           <button
             type="submit"
             class="w-full inline-flex justify-center items-center text-sm font-bold text-white bg-tc-orange rounded-xl px-6 py-3.5 hover:opacity-90 transition-opacity disabled:opacity-60"
@@ -112,6 +114,8 @@ import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
 </BaseLayout>
 
 <script>
+  import { guardFields, resetGuard } from '../lib/formGuardClient';
+
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const statusEl = document.getElementById('contact-message-status');
 
@@ -137,6 +141,7 @@ import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
           name: nameInput.value,
           email: emailInput.value,
           message: messageInput.value,
+          ...guardFields(form),
         }),
       });
       const data = await res.json();
@@ -152,6 +157,7 @@ import { PHONE_DISPLAY, PHONE_TEL, CALENDLY_URL } from '../lib/contact';
       statusEl.textContent = 'Something went wrong. Try again.';
       statusEl.classList.add('text-red-600');
     } finally {
+      resetGuard(form);
       button.disabled = false;
       button.textContent = originalLabel;
     }

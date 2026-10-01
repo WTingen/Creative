@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailCapture from '../components/EmailCapture.astro';
 import { CALENDLY_URL } from '../lib/contact';
+import { TIERS } from '../lib/brandReview';
 
 // Condensed from the original 22-question version (5 categories x ~4
 // questions each) down to 2 questions per category — one merged question per
@@ -157,56 +158,7 @@ const categoryMeta = categories.map((cat) => ({
 const minScore = questionCount * 1;
 const maxScore = questionCount * 5;
 
-// Same five bands and voice as the original Real Brand Review PDF, scaled to
-// this question count (10 questions, 10-50) and routed to the three
-// services actually live on the site instead of generic outreach copy.
-const tiers = [
-  {
-    id: 'critical',
-    min: 10,
-    max: 17,
-    label: 'Critical',
-    summary:
-      'Your brand requires immediate attention to address fundamental challenges and redefine its direction.',
-    cta: 'foundations',
-  },
-  {
-    id: 'needs-improvement',
-    min: 18,
-    max: 25,
-    label: 'Needs Improvement',
-    summary:
-      'There are significant opportunities for improvement in your brand strategy and execution.',
-    cta: 'foundations',
-  },
-  {
-    id: 'moderate',
-    min: 26,
-    max: 33,
-    label: 'Moderate',
-    summary:
-      "Your brand has a good foundation. Several areas need attention to elevate your brand's impact.",
-    cta: 'alignment',
-  },
-  {
-    id: 'effective',
-    min: 34,
-    max: 41,
-    label: 'Effective',
-    summary:
-      'Your brand is doing well. There are areas that could benefit from refining and enhancement.',
-    cta: 'marketing',
-  },
-  {
-    id: 'highly-effective',
-    min: 42,
-    max: 50,
-    label: 'Highly Effective',
-    summary:
-      "Your brand is in excellent shape! However, there's always room for improvement and staying ahead of the competition.",
-    cta: 'marketing',
-  },
-];
+const tiers = TIERS;
 
 const ctaByBucket = {
   foundations: { label: 'See Built Brand Foundations', href: '/services#foundations' },

@@ -64,8 +64,10 @@ async function appendRow(tab: string, values: unknown[]): Promise<{ ok: boolean;
     if (!token) return { ok: false, reason: 'Google service account not configured' };
 
     const range = encodeURIComponent(`'${tab}'!A1`);
+    // RAW, not USER_ENTERED — rows hold visitor-typed text, and USER_ENTERED
+    // would evaluate anything starting with "=" as a live formula.
     const res = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=USER_ENTERED`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=RAW`,
       {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },

@@ -3,6 +3,8 @@ import { insertLead } from '../../lib/db';
 import { sendConfirmationEmail } from '../../lib/email';
 import { logNewsletterSignup, logBrandReviewResult } from '../../lib/sheets';
 import { CALENDLY_URL, EMAIL_USER, EMAIL_DOMAIN } from '../../lib/contact';
+import { rebuildBrandReviewResult, type BrandReviewResult } from '../../lib/brandReview';
+import { checkSubmission, guardRejection, escapeHtml, json } from '../../lib/spamGuard';
 
 // This is the one route on the site that runs on-demand instead of being
 // prerendered to a static file — it has to actually execute server-side to
@@ -11,19 +13,9 @@ export const prerender = false;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-interface BrandReviewCategory {
-  name: string;
-  score: number;
-  max: number;
-}
-
-interface BrandReviewExtra {
-  score: number;
-  maxScore: number;
-  tierLabel: string;
-  tierSummary: string;
-  categories: BrandReviewCategory[];
-}
+const MAX_EMAIL = 254;
+const ALLOWED_SOURCES = ['blog', 'brand-review'];
+const DETAIL_RE = /^[a-z0-9-]{1,100}$/;
 
 // Short, practical improvement notes per category — shown under each
 // category's score in the results email regardless of exactly how they
@@ -41,26 +33,14 @@ const CATEGORY_TIPS: Record<string, string> = {
     'Your website and marketing materials are often the first — and sometimes only — impression. Making sure they match the caliber of your actual work pays off fast.',
 };
 
-function isBrandReviewExtra(value: unknown): value is BrandReviewExtra {
-  if (!value || typeof value !== 'object') return false;
-  const v = value as Record<string, unknown>;
-  return (
-    typeof v.score === 'number' &&
-    typeof v.maxScore === 'number' &&
-    typeof v.tierLabel === 'string' &&
-    typeof v.tierSummary === 'string' &&
-    Array.isArray(v.categories)
-  );
-}
-
-function buildBrandReviewEmail(extra: BrandReviewExtra) {
+function buildBrandReviewEmail(extra: BrandReviewResult) {
   const categoryRows = extra.categories
     .map((cat) => {
       const tip = CATEGORY_TIPS[cat.name] ?? '';
       return `
         <div style="margin-bottom: 20px;">
           <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; color: #1A1815;">
-            <span>${cat.name}</span>
+            <span>${escapeHtml(cat.name)}</span>
             <span>${cat.score} / ${cat.max}</span>
           </div>
           <p style="margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: #656565;">${tip}</p>
@@ -99,20 +79,20 @@ function buildWarrenNotification(
   email: string,
   source: string,
   detail: string | undefined,
-  extra: BrandReviewExtra | undefined
+  extra: BrandReviewResult | undefined
 ) {
   if (extra) {
     const categoryLines = extra.categories
-      .map((cat) => `<li>${cat.name}: <strong>${cat.score} / ${cat.max}</strong></li>`)
+      .map((cat) => `<li>${escapeHtml(cat.name)}: <strong>${cat.score} / ${cat.max}</strong></li>`)
       .join('');
     return {
       subject: `New Brand Review: ${email} — ${extra.tierLabel} (${extra.score}/${extra.maxScore})`,
       html: `
         <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-          <p><strong>${email}</strong> just completed the Brand Review.</p>
+          <p><strong>${escapeHtml(email)}</strong> just completed the Brand Review.</p>
           <p>Result: <strong>${extra.tierLabel}</strong> — ${extra.score} / ${extra.maxScore}</p>
           <ul style="padding-left: 18px; line-height: 1.8;">${categoryLines}</ul>
-          <p>Routed to: <strong>${detail ?? 'n/a'}</strong></p>
+          <p>Routed to: <strong>${escapeHtml(extra.ctaBucket)}</strong></p>
         </div>
       `,
     };
@@ -121,8 +101,8 @@ function buildWarrenNotification(
     subject: `New newsletter signup: ${email}`,
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <p><strong>${email}</strong> just subscribed.</p>
-        <p>Source: ${source}${detail ? ` (${detail})` : ''}</p>
+        <p><strong>${escapeHtml(email)}</strong> just subscribed.</p>
+        <p>Source: ${escapeHtml(source)}${detail ? ` (${escapeHtml(detail)})` : ''}</p>
       </div>
     `,
   };
@@ -133,49 +113,50 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     body = await request.json();
   } catch {
-    return new Response(JSON.stringify({ success: false, error: 'Invalid request body' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ success: false, error: 'Invalid request body' }, 400);
   }
 
   const email = typeof body.email === 'string' ? body.email.trim() : '';
-  const source = typeof body.source === 'string' ? body.source : 'unknown';
-  const detail = typeof body.detail === 'string' ? body.detail : undefined;
-  const extra = body.extra;
+  const source = typeof body.source === 'string' ? body.source : '';
+  const rawDetail = typeof body.detail === 'string' ? body.detail : undefined;
 
-  if (!EMAIL_RE.test(email)) {
-    return new Response(JSON.stringify({ success: false, error: 'Enter a valid email address.' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  if (!EMAIL_RE.test(email) || email.length > MAX_EMAIL) {
+    return json({ success: false, error: 'Enter a valid email address.' }, 400);
   }
+  if (!ALLOWED_SOURCES.includes(source) || (rawDetail !== undefined && !DETAIL_RE.test(rawDetail))) {
+    return json({ success: false, error: 'Invalid request body' }, 400);
+  }
+
+  const guard = await checkSubmission(request, body);
+  if (!guard.ok) return guardRejection(guard, '/api/subscribe');
+
+  // Brand Review results are rebuilt from the raw category scores rather
+  // than trusted as sent — the tier text ends up in an email from our
+  // domain, so it must only ever be our own copy.
+  const review = source === 'brand-review' ? rebuildBrandReviewResult(body.extra) : null;
+  const detail = review ? review.ctaBucket : rawDetail;
 
   try {
     insertLead({ email, source, detail });
   } catch (err) {
     console.error('Failed to save lead:', err);
-    return new Response(JSON.stringify({ success: false, error: 'Something went wrong. Try again.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return json({ success: false, error: 'Something went wrong. Try again.' }, 500);
   }
 
   // Best-effort confirmation email — a lead is already saved above even if
   // this fails or Resend isn't configured yet. Brand Review submissions with
   // a valid results payload get the full breakdown instead of the generic note.
-  const emailContent =
-    source === 'brand-review' && isBrandReviewExtra(extra)
-      ? buildBrandReviewEmail(extra)
-      : {
-          subject: "You're subscribed to Tingen Creative",
-          html: `
-            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-              <p>Thanks for subscribing — you'll hear from us when there's something worth reading.</p>
-              <p>— Warren Tingen, Tingen Creative</p>
-            </div>
-          `,
-        };
+  const emailContent = review
+    ? buildBrandReviewEmail(review)
+    : {
+        subject: "You're subscribed to Tingen Creative",
+        html: `
+          <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+            <p>Thanks for subscribing — you'll hear from us when there's something worth reading.</p>
+            <p>— Warren Tingen, Tingen Creative</p>
+          </div>
+        `,
+      };
 
   await sendConfirmationEmail({
     to: email,
@@ -185,8 +166,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Best-effort notification to Warren for every signup, not just contact
   // form submissions.
-  const isBrandReview = source === 'brand-review' && isBrandReviewExtra(extra);
-  const notification = buildWarrenNotification(email, source, detail, isBrandReview ? extra : undefined);
+  const notification = buildWarrenNotification(email, source, detail, review ?? undefined);
   await sendConfirmationEmail({
     to: `${EMAIL_USER}@${EMAIL_DOMAIN}`,
     subject: notification.subject,
@@ -195,16 +175,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Best-effort row in the Google Sheet Warren tracks leads in — never
   // blocks or fails the response if Sheets access isn't configured.
-  if (source === 'brand-review' && isBrandReviewExtra(extra) && detail) {
-    const result = await logBrandReviewResult({ email, ctaBucket: detail, ...extra });
+  if (review) {
+    const result = await logBrandReviewResult({ email, ...review });
     if (!result.ok) console.error('Failed to log Brand Review result to Sheets:', result.reason);
   } else {
     const result = await logNewsletterSignup({ email, source, detail });
     if (!result.ok) console.error('Failed to log signup to Sheets:', result.reason);
   }
 
-  return new Response(JSON.stringify({ success: true }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return json({ success: true });
 };
