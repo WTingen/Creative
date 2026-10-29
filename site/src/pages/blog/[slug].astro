@@ -107,6 +107,10 @@ const articleSchema = {
 </BaseLayout>
 
 <style>
+  /* some older posts list sources as long plain-text URLs — let them wrap on phones */
+  .blog-content {
+    overflow-wrap: break-word;
+  }
   .blog-content :global(p) {
     margin-bottom: 1.25em;
     line-height: 1.75;
@@ -146,6 +150,8 @@ const articleSchema = {
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 2px;
+    /* long bare URLs in source lists would otherwise overflow on phones */
+    overflow-wrap: anywhere;
   }
   .blog-content :global(strong) {
     font-weight: 700;
@@ -165,5 +171,7 @@ const articleSchema = {
   }
   .blog-content :global(figure) {
     margin: 0 0 1.25em;
+    /* wide tables scroll inside their own box on phones instead of widening the page */
+    overflow-x: auto;
   }
 </style>
